@@ -9,6 +9,7 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/b55bf0140f674909814b8baea8ec8b16)](https://app.codacy.com/gh/Skillnter/http-error-kit/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/b55bf0140f674909814b8baea8ec8b16)](https://app.codacy.com/gh/Skillnter/http-error-kit/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 ![npms.io (final)](https://img.shields.io/npms-io/maintenance-score/http-error-kit?color=brightgreen)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/skillnter/http-response-status-code?color=brightgreen)
 ![npm](https://img.shields.io/npm/dy/http-error-kit)
 [![Socket Badge](https://socket.dev/api/badge/npm/package/http-error-kit/1.7.5)](https://socket.dev/npm/package/http-error-kit/overview/1.0.0)
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-121013?logo=github&logoColor=white)](https://skillnter.github.io/http-error-kit/)
