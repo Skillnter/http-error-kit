@@ -1,4 +1,7 @@
-import * as STATUS_CODES from "http-response-status-code";
+import {
+    CODES as STATUS_CODES,
+    getStatusDescription,
+} from "http-response-status-code";
 
 /**
  * Represents a general error with a status code, message, and optional details.
@@ -29,10 +32,11 @@ export class KitGeneralError extends Error {
      * @param {string} message - A human-readable error message.
      * @param {*} details - Additional details about the error, if any.
      */
-    constructor(statusCode: number, message: string, details: unknown = {}) {
+    constructor(statusCode: number, message: string, details?: unknown) {
+        /* istanbul ignore next */
         super(message);
         this.statusCode = statusCode;
-        this.message = message;
+        this.message = message.toString();
         this.details = details;
     }
 }
@@ -47,16 +51,20 @@ export class BadRequestError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 400.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_400
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_400, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_400).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_400 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, BadRequestError.prototype);
     }
 }
 
@@ -70,16 +78,20 @@ export class UnauthorizedError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 401.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_401
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_401, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_401).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_401 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, UnauthorizedError.prototype);
     }
 }
 
@@ -93,16 +105,20 @@ export class PaymentRequiredError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 402.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_402
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_402, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_402).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_402 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, PaymentRequiredError.prototype);
     }
 }
 
@@ -116,16 +132,20 @@ export class ForbiddenError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 403.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_403
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_403, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_403).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_403 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, ForbiddenError.prototype);
     }
 }
 
@@ -139,16 +159,20 @@ export class NotFoundError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 404.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_404
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_404, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_404).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_404 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, NotFoundError.prototype);
     }
 }
 
@@ -162,16 +186,20 @@ export class MethodNotAllowedError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 405.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_405
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_405, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_405).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_405 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, MethodNotAllowedError.prototype);
     }
 }
 
@@ -185,16 +213,20 @@ export class NotAcceptableError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 406.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_406
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_406, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_406).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_406 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, NotAcceptableError.prototype);
     }
 }
 
@@ -208,16 +240,20 @@ export class ProxyAuthenticationRequiredError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 407.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_407
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_407, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_407).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_407 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, ProxyAuthenticationRequiredError.prototype);
     }
 }
 
@@ -231,16 +267,20 @@ export class RequestTimeoutError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 408.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_408
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_408, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_408).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_408 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, RequestTimeoutError.prototype);
     }
 }
 
@@ -254,16 +294,20 @@ export class ConflictError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 409.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_409
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_409, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_409).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_409 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, ConflictError.prototype);
     }
 }
 
@@ -277,16 +321,20 @@ export class GoneError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 410.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_410
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_410, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_410).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_410 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, GoneError.prototype);
     }
 }
 
@@ -300,16 +348,20 @@ export class LengthRequiredError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 411.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_411
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_411, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_411).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_411 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, LengthRequiredError.prototype);
     }
 }
 
@@ -323,16 +375,20 @@ export class PreconditionFailedError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 412.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_412
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_412, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_412).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_412 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, PreconditionFailedError.prototype);
     }
 }
 
@@ -346,16 +402,20 @@ export class RequestTooLongError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 413.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_413
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_413, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_413).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_413 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, RequestTooLongError.prototype);
     }
 }
 
@@ -369,16 +429,20 @@ export class RequestUriTooLongError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 414.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_414
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_414, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_414).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_414 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, RequestUriTooLongError.prototype);
     }
 }
 
@@ -392,16 +456,20 @@ export class UnsupportedMediaTypeError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 415.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_415
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_415, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_415).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_415 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, UnsupportedMediaTypeError.prototype);
     }
 }
 
@@ -415,16 +483,23 @@ export class RequestedRangeNotSatisfiableError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 416.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_416
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_416, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_416).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_416 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(
+            this,
+            RequestedRangeNotSatisfiableError.prototype
+        );
     }
 }
 
@@ -438,16 +513,20 @@ export class ExpectationFailedError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 417.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_417
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_417, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_417).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_417 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, ExpectationFailedError.prototype);
     }
 }
 
@@ -461,16 +540,20 @@ export class ImATeapotError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 418.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_418
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_418, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_418).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_418 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, ImATeapotError.prototype);
     }
 }
 
@@ -484,16 +567,20 @@ export class InsufficientSpaceOnResourceError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 419.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_419
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_419, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_419).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_419 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, InsufficientSpaceOnResourceError.prototype);
     }
 }
 
@@ -507,16 +594,20 @@ export class MethodFailureError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 420.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_420
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_420, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_420).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_420 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, MethodFailureError.prototype);
     }
 }
 
@@ -530,16 +621,20 @@ export class MisdirectedRequestError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 421.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_421
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_421, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_421).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_421 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, MisdirectedRequestError.prototype);
     }
 }
 
@@ -553,16 +648,20 @@ export class UnprocessableEntityError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 422.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_422
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_422, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_422).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_422 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, UnprocessableEntityError.prototype);
     }
 }
 
@@ -576,16 +675,20 @@ export class LockedError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 423.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_423
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_423, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_423).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_423 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, LockedError.prototype);
     }
 }
 
@@ -599,16 +702,20 @@ export class FailedDependencyError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 424.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_424
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_424, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_424).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_424 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, FailedDependencyError.prototype);
     }
 }
 
@@ -622,16 +729,20 @@ export class TooEarlyError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 425.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_425
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_425, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_425).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_425 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, TooEarlyError.prototype);
     }
 }
 
@@ -645,16 +756,20 @@ export class UpgradeRequiredError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 426.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_426
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_426, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_426).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_426 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, UpgradeRequiredError.prototype);
     }
 }
 
@@ -668,16 +783,20 @@ export class PreconditionRequiredError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 428.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_428
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_428, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_428).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_428 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, PreconditionRequiredError.prototype);
     }
 }
 
@@ -691,16 +810,20 @@ export class TooManyRequestsError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 429.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_429
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_429, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_429).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_429 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, TooManyRequestsError.prototype);
     }
 }
 
@@ -714,16 +837,20 @@ export class RequestHeaderFieldsTooLargeError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 431.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_431
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_431, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_431).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_431 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, RequestHeaderFieldsTooLargeError.prototype);
     }
 }
 
@@ -737,16 +864,20 @@ export class UnavailableForLegalReasonsError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 451.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_451
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_451, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_451).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_451 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, UnavailableForLegalReasonsError.prototype);
     }
 }
 
@@ -754,22 +885,26 @@ export class UnavailableForLegalReasonsError extends KitGeneralError {
  * Creates a new instance of the KitGeneralError class with a status code of 500, Internal Server Error.
  * @extends {KitGeneralError}
  */
-export class InternalServerErrorError extends KitGeneralError {
+export class InternalServerError extends KitGeneralError {
     /**
      * Initializes a new InternalServerErrorError instance.
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 500.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_500
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_500, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_500).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_500 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, InternalServerError.prototype);
     }
 }
 
@@ -783,16 +918,20 @@ export class NotImplementedError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 501.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_501
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_501, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_501).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_501 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, NotImplementedError.prototype);
     }
 }
 
@@ -806,16 +945,20 @@ export class BadGatewayError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 502.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_502
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_502, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_502).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_502 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, BadGatewayError.prototype);
     }
 }
 
@@ -829,16 +972,20 @@ export class ServiceUnavailableError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 503.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_503
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_503, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_503).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_503 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, ServiceUnavailableError.prototype);
     }
 }
 
@@ -852,16 +999,20 @@ export class GatewayTimeoutError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 504.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_504
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_504, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_504).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_504 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, GatewayTimeoutError.prototype);
     }
 }
 
@@ -875,16 +1026,20 @@ export class HttpVersionNotSupportedError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 505.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_505
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_505, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_505).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_505 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, HttpVersionNotSupportedError.prototype);
     }
 }
 
@@ -898,16 +1053,20 @@ export class VariantAlsoNegotiatesError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 506.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_506
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_506, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_506).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_506 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, VariantAlsoNegotiatesError.prototype);
     }
 }
 
@@ -921,16 +1080,20 @@ export class InsufficientStorageError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 507.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_507
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_507, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_507).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_507 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, InsufficientStorageError.prototype);
     }
 }
 
@@ -944,16 +1107,20 @@ export class LoopDetectedError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 508.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_508
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_508, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_508).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_508 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, LoopDetectedError.prototype);
     }
 }
 
@@ -967,16 +1134,20 @@ export class NotExtendedError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 510.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_510
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_510, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_510).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_510 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(this, NotExtendedError.prototype);
     }
 }
 
@@ -990,15 +1161,22 @@ export class NetworkAuthenticationRequiredError extends KitGeneralError {
      * @param {string} [message] - The error message. Defaults to the HTTP status code description for 511.
      * @param {unknown} [details] - Additional error details.
      */
-    constructor(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        message: string = STATUS_CODES.getStatusDescription(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            STATUS_CODES.CODES.HTTP_CODE_511
-        ),
-        details: unknown = {}
-    ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        super(STATUS_CODES.CODES.HTTP_CODE_511, message, details);
+    constructor(message?: string, details?: unknown) {
+        /* eslint-disable-next-line */
+        message =
+            message ??
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_511).toString();
+        /* istanbul ignore next */
+        super(
+            /* eslint-disable-next-line */
+            STATUS_CODES.HTTP_CODE_511 as number,
+            message,
+            details
+        );
+        Object.setPrototypeOf(
+            this,
+            NetworkAuthenticationRequiredError.prototype
+        );
     }
 }

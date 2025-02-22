@@ -1,66 +1,93 @@
 # Http Error Kit
 
-A lightweight and flexible error handling utility for HTTP applications. This package provides structured error handling with customizable error formatting.
+`http-error-kit` is a versatile and customizable error handling library for JavaScript and TypeScript applications. It provides a collection of HTTP error classes that can be tailored to fit various formatting needs, both globally and on a per-instance basis.
+
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/skillnter/http-error-kit/main.yml)
+[![npm version](https://img.shields.io/npm/v/http-error-kit?color=brightgreen)](https://www.npmjs.com/package/http-error-kit)
+[![GitHub license](https://img.shields.io/github/license/skillnter/http-error-kit?color=brightgreen)](LICENSE)
+[![GitHub Issues](https://img.shields.io/github/issues/Skillnter/http-error-kit)](https://github.com/Skillnter/http-error-kit/issues)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/b55bf0140f674909814b8baea8ec8b16)](https://app.codacy.com/gh/Skillnter/http-error-kit/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/b55bf0140f674909814b8baea8ec8b16)](https://app.codacy.com/gh/Skillnter/http-error-kit/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+![npms.io (final)](https://img.shields.io/npms-io/maintenance-score/http-error-kit?color=brightgreen)
+![npm](https://img.shields.io/npm/dy/http-error-kit)
+[![Socket Badge](https://socket.dev/api/badge/npm/package/http-error-kit/1.7.5)](https://socket.dev/npm/package/http-error-kit/overview/1.0.0)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-121013?logo=github&logoColor=white)](https://skillnter.github.io/http-error-kit/)
+[![Github Sponsors](https://img.shields.io/badge/GitHub%20Sponsors-30363D?&logo=GitHub-Sponsors&logoColor=EA4AAA)](https://github.com/sponsors/Skillnter)
+[![Open Collective](https://img.shields.io/badge/Open%20Collective-3385FF?logo=open-collective&logoColor=white)](https://opencollective.com/http-error-kit)
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/skillnter)
+[![Patreon](https://img.shields.io/badge/Patreon-F96854?logo=patreon&logoColor=white)](https://www.patreon.com/skillnter)
+[![PayPal](https://img.shields.io/badge/PayPal-003087?logo=paypal&logoColor=fff)](https://www.paypal.me/skillnte)
 
 ## Features
-- Predefined HTTP error classes (e.g., `NotFoundError`, `BadRequestError`, `InternalServerErrorError`, etc.)
-- Customizable error formatting
-- Consistent error structure across applications
-- Works seamlessly with TypeScript
+
+-   Predefined HTTP error classes (e.g., `NotFoundError`, `BadRequestError`, `InternalServerError`, etc.)
+-   Customizable error formatting
+-   Consistent error structure across applications
+-   Works seamlessly with TypeScript
 
 ## Table of Content
 
-- [Installation](#installation)
-- [Usage](#usage)
-- [Custom Error Formatting](#custom-error-formatting)
-- [Error Kit Overview](#error-kit-overview)
-  - [1. Kit General Error](#1-kit-general-error)
-  - [2. Bad Request Error](#2-bad-request-error)
-  - [3. Unauthorized Error](#3-unauthorized-error)
-  - [4. Payment Required Error](#4-payment-required-error)
-  - [5. Forbidden Error](#5-forbidden-error)
-  - [6. Not Found Error](#6-not-found-error)
-  - [7. Method Not Allowed Error](#7-method-not-allowed-error)
-  - [8. Not Acceptable Error](#8-not-acceptable-error)
-  - [9. Proxy Authentication Required Error](#9-proxy-authentication-required-error)
-  - [10. Request Timeout Error](#10-request-timeout-error)
-  - [11. Conflict Error](#11-conflict-error)
-  - [12. Gone Error](#12-gone-error)
-  - [13. Length Required Error](#13-length-required-error)
-  - [14. Precondition Failed Error](#14-precondition-failed-error)
-  - [15. Request Entity Too Large Error](#15-request-entity-too-large-error)
-  - [16. Request-URI Too Long Error](#16-request-uri-too-long-error)
-  - [17. Unsupported Media Type Error](#17-unsupported-media-type-error)
-  - [18. Requested Range Not Satisfiable Error](#18-requested-range-not-satisfiable-error)
-  - [19. Expectation Failed Error](#19-expectation-failed-error)
-  - [20. I'm a teapot Error](#20-im-a-teapot-error)
-  - [21. Insufficient Space on Resource Error](#21-insufficient-space-on-resource-error)
-  - [22. Method Failure Error](#22-method-failure-error)
-  - [23. Misdirected Request Error](#23-misdirected-request-error)
-  - [24. Unprocessable Entity Error](#24-unprocessable-entity-error)
-  - [25. Locked Error](#25-locked-error)
-  - [26. Failed Dependency Error](#26-failed-dependency-error)
-  - [27. Too Early Error](#27-too-early-error)
-  - [28. Upgrade Required Error](#28-upgrade-required-error)
-  - [29. Precondition Required Error](#29-precondition-required-error)
-  - [30. Too Many Requests Error](#30-too-many-requests-error)
-  - [31. Request Header Fields Too Large Error](#31-request-header-fields-too-large-error)
-  - [32. Unavailable For Legal Reasons Error](#32-unavailable-for-legal-reasons-error)
-  - [33. Internal Server Error](#33-internal-server-error)
-  - [34. Not Implemented Error](#34-not-implemented-error)
-  - [35. Bad Gateway Error](#35-bad-gateway-error)
-  - [36. Service Unavailable Error](#36-service-unavailable-error)
-  - [37. Gateway Timeout Error](#37-gateway-timeout-error)
-  - [38. HTTP Version Not Supported Error](#38-http-version-not-supported-error)
-  - [39. Variant Also Negotiates Error](#39-variant-also-negotiates-error)
-  - [40. Insufficient Storage Error](#40-insufficient-storage-error)
-  - [41. Loop Detected Error](#41-loop-detected-error)
-  - [42. Not Extended Error](#42-not-extended-error)
-  - [43. Network Authentication Required Error](#43-network-authentication-required-error)
-  - [44. Kit Http Error](#44-kit-http-error)
-- [People](#people)
-- [Donations](#donations)
-- [License](#license)
+-   [Installation](#installation)
+-   [Usage](#usage)
+    -   [1. Dynamic Formatting ( Default )](#1-dynamic-formatting--default-)
+    -   [2. Generic HTTP Errors](#2-generic-http-errors)
+    -   [3. Standardized HTTP Errors (Configurable Formatting)](#3-standardized-http-errors-configurable-formatting)
+-   [Formatters](#formatters)
+    -   [Using a Custom Error Formatter](#using-a-custom-error-formatter)
+    -   [Key Differences](#key-differences)
+    -   [Types of Formatter](#types-of-formatter)
+        -   [1. Global Formatter](#1-global-formatter)
+        -   [2. Instance-Level Formatter Override](#2-instance-level-formatter-override)
+-   [Error Kit Overview](#error-kit-overview)
+    -   [Common Error Classes](#common-error-classes)
+        -   [1. Bad Request Error](#1-bad-request-error)
+        -   [2. Unauthorized Error](#2-unauthorized-error)
+        -   [3. Payment Required Error](#3-payment-required-error)
+        -   [4. Forbidden Error](#4-forbidden-error)
+        -   [5. Not Found Error](#5-not-found-error)
+        -   [6. Method Not Allowed Error](#6-method-not-allowed-error)
+        -   [7. Not Acceptable Error](#7-not-acceptable-error)
+        -   [8. Proxy Authentication Required Error](#8-proxy-authentication-required-error)
+        -   [9. Request Timeout Error](#9-request-timeout-error)
+        -   [10. Conflict Error](#10-conflict-error)
+        -   [11. Gone Error](#11-gone-error)
+        -   [12. Length Required Error](#12-length-required-error)
+        -   [13. Precondition Failed Error](#13-precondition-failed-error)
+        -   [14. Request Entity Too Large Error](#14-request-entity-too-large-error)
+        -   [15. Request-URI Too Long Error](#15-request-uri-too-long-error)
+        -   [16. Unsupported Media Type Error](#16-unsupported-media-type-error)
+        -   [17. Requested Range Not Satisfiable Error](#17-requested-range-not-satisfiable-error)
+        -   [18. Expectation Failed Error](#18-expectation-failed-error)
+        -   [19. I'm a teapot Error](#19-im-a-teapot-error)
+        -   [20. Insufficient Space on Resource Error](#20-insufficient-space-on-resource-error)
+        -   [21. Method Failure Error](#21-method-failure-error)
+        -   [22. Misdirected Request Error](#22-misdirected-request-error)
+        -   [23. Unprocessable Entity Error](#23-unprocessable-entity-error)
+        -   [24. Locked Error](#24-locked-error)
+        -   [25. Failed Dependency Error](#25-failed-dependency-error)
+        -   [26. Too Early Error](#27-too-early-error)
+        -   [27. Upgrade Required Error](#27-upgrade-required-error)
+        -   [28. Precondition Required Error](#28-precondition-required-error)
+        -   [29. Too Many Requests Error](#29-too-many-requests-error)
+        -   [30. Request Header Fields Too Large Error](#30-request-header-fields-too-large-error)
+        -   [31. Unavailable For Legal Reasons Error](#31-unavailable-for-legal-reasons-error)
+        -   [32. Internal Server Error](#32-internal-server-error)
+        -   [33. Not Implemented Error](#33-not-implemented-error)
+        -   [34. Bad Gateway Error](#34-bad-gateway-error)
+        -   [35. Service Unavailable Error](#35-service-unavailable-error)
+        -   [36. Gateway Timeout Error](#36-gateway-timeout-error)
+        -   [37. HTTP Version Not Supported Error](#37-http-version-not-supported-error)
+        -   [38. Variant Also Negotiates Error](#38-variant-also-negotiates-error)
+        -   [39. Insufficient Storage Error](#39-insufficient-storage-error)
+        -   [40. Loop Detected Error](#40-loop-detected-error)
+        -   [41. Not Extended Error](#41-not-extended-error)
+        -   [42. Network Authentication Required Error](#42-network-authentication-required-error)
+    -   [Special Error Classes](#special-error-classes)
+        -   [43. Kit General Error](#43-kit-general-error)
+        -   [44. Kit Http Error](#44-kit-http-error)
+-   [People](#people)
+-   [Donations](#donations)
+-   [License](#license)
 
 ## Installation
 
@@ -70,56 +97,19 @@ npm install http-error-kit
 
 ## Usage
 
-```javascript
-var { KitGeneralError } = require('http-error-kit');
+### 1. Dynamic Formatting ( Default )
 
-console.log(new KitGeneralError(500, "Internal Server Error", { field: "email" }));
-```
-
-### Custom Error Formatting
+By default, importing error classes allows their format to be dynamically updated by changing the global formatter.
 
 ```javascript
-const formatter = (statusCode, message, details, ...args) => ({
-    code: statusCode,
-    msg: message,
-    extra: details,
-    traceId: args[0] || "default-trace-id"
-});
+const { BadRequestError } = require("http-error-kit");
+//
+import { BadRequestError } from "http-error-kit";
 
-const errorKit = new KitHttpError(400, "Bad Request", {}, formatter);
-console.log(errorKit.BadRequestError("Invalid request", { field: "email" }, '0fcb44cb-4f09-4900-8c4f-73ddd37ffe0a'));
-/*  KitHttpError {
- *      code: 400,
- *      msg: "Invalid request",
- *      extra: {
- *          field: "email"
- *      },
- *      traceId: "0fcb44cb-4f09-4900-8c4f-73ddd37ffe0a"
- *  }
- */
-```
-
-## Error Kit Overview
-
-### 1. Kit General Error
-
-Represents a general error with a status code, message, and optional details.
-
-#### Parameters
-
-- `statusCode` (`number`): The HTTP status code associated with the error (e.g., `500`).
-- `message` (`string`): A human-readable error message. (e.g., `"Internal Server Error"`).
-- `details` (`any`): Additional details about the error, if any.
-
-### Example
-
-```javascript
-var { KitGeneralError } = require('http-error-kit');
-
-console.log(new KitGeneralError(500, "Internal Server Error", { field: "email" }));
-/*  KitGeneralError {
- *      statusCode: 500,
- *      message: "Internal Server Error",
+console.log(new BadRequestError("Invalid request", { field: "email" }));
+/*  BadRequestError {
+ *      statusCode: 400,
+ *      message: "Invalid request",
  *      details: {
  *          field: "email"
  *      }
@@ -127,19 +117,199 @@ console.log(new KitGeneralError(500, "Internal Server Error", { field: "email" }
  */
 ```
 
-### 2. Bad Request Error
+After setting a global formatter, the same error class will follow the new structure defined by the formatter.
+
+```javascript
+const { BadRequestError, KitHttpErrorConfig } = require("http-error-kit");
+//
+import { BadRequestError, KitHttpErrorConfig } from "http-error-kit";
+
+const formatter = (statusCode, message, details, ...args) => ({
+    code: statusCode,
+    msg: message,
+    extra: details,
+    traceId: args[0] || "default-trace-id",
+});
+
+KitHttpErrorConfig.configureFormatter(formatter);
+
+console.log(new BadRequestError("Invalid request", { field: "email" }));
+/*  BadRequestError {
+ *      code: 400,
+ *      msg: "Invalid request",
+ *      extra: {
+ *          field: "email"
+ *      },
+ *      traceId: "default-trace-id"
+ *  }
+ */
+```
+
+### 2. Generic HTTP Errors
+
+By default, if you import errors without any additional setup, you'll get the **generic error implementations**.
+
+```javascript
+const { BadRequestError } = require("http-error-kit");
+//
+import { BadRequestError } from "http-error-kit";
+
+console.log(new BadRequestError("Invalid request", { field: "email" }));
+/*  BadRequestError {
+ *      statusCode: 400,
+ *      message: "Invalid request",
+ *      details: {
+ *          field: "email"
+ *      }
+ *  }
+ */
+```
+
+This follows a **simple structure** without any additional formatting.
+
+**Note:** If you prefer to use errors specifically with simple structure (extended by `KitGeneralError`), you can explicitly import errors from:
+
+```javascript
+const { BadRequestError } = require("http-error-kit/generic");
+```
+
+### 3. Standardized HTTP Errors (Configurable Formatting)
+
+You can set a global formatter to customize the error structure across your application.
+To enable structured error responses, use `KitHttpError` with global configuration:
+
+```javascript
+const { BadRequestError, KitHttpErrorConfig } = require("http-error-kit");
+
+KitHttpErrorConfig.configureFormatter(
+    (statusCode, message, details, ...args) => ({
+        code: statusCode,
+        msg: message,
+        extra: details,
+        traceId: args[0] || "0fcb44cb-4f09-4900-8c4f-73ddd37ffe0a",
+    })
+);
+
+console.log(
+    new BadRequestError("Invalid request", { field: "email" }, "trace-123")
+);
+/*  BadRequestError {
+ *      code: 400,
+ *      msg: "Invalid request",
+ *      extra: {
+ *          field: "email"
+ *      },
+ *      traceId: "trace-123"
+ *  }
+ */
+```
+
+## Formatters
+
+### Using a Custom Error Formatter
+
+A custom formatter allows you to modify the structure of error responses. The formatter function receives the following parameters:
+
+| Parameter    | Description                                          |
+| ------------ | ---------------------------------------------------- |
+| `statusCode` | The HTTP status code (e.g., `400` for "Bad Request") |
+| `message`    | The error message (e.g., `"Invalid request"`)        |
+| `details`    | Additional error details (optional)                  |
+| `...args`    | Extra arguments passed, such as a unique trace ID    |
+
+## Key Differences
+
+| Feature             | http-error-kit                                                                                                                           | http-error-kit/http                                                                                                                      | http-error-kit/generic                                      |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| **Error Type**      | Standardized errors (with global formatting) and can be overridden by instance-level formatters at the error instance level              | Standardized errors (with global formatting) and can be overridden by instance-level formatters at the error instance level              | Static format errors (no dynamic formatting)                |
+| **Import Path**     | `import { BadRequestError } from "http-error-kit";`                                                                                      | `import { BadRequestError } from "http-error-kit/http";`                                                                                 | `import { BadRequestError } from "http-error-kit/generic";` |
+| **Customization**   | Uses global formatter set via `KitHttpErrorConfig.configureFormatter` with the ability to change format with an instance-level formatter | Uses global formatter set via `KitHttpErrorConfig.configureFormatter` with the ability to change format with an instance-level formatter | Uses a fixed structure without formatting customization     |
+| **Formatter Usage** | Global formatter applied to all errors dynamically but can be customized per instance and does not affect other instances                | Global formatter applied to all errors dynamically but can be customized per instance and does not affect other instances                | Always follows a predefined static structure                |
+| **Special Classes** | `KitGeneralError`, `KitHttpError`, `KitHttpErrorConfig`                                                                                  | `KitHttpError`, `KitHttpErrorConfig`                                                                                                     | `KitGeneralError`                                           |
+| **When to Use?**    | When you need a globally consistent error structure with the flexibility to override formatting per instance                             | When you need a globally consistent error structure with the flexibility to override formatting per instance                             | When you need lightweight, raw errors without customization |
+| **Example Output**  | `{ code: 400, msg: "Invalid request", extra: { field: "email" }, traceId: "trace-123" }`                                                 | `{ code: 400, msg: "Invalid request", extra: { field: "email" }, traceId: "trace-456" }`                                                 | `{ status: 400, message: "Invalid request" }`               |
+| **Best for**        | Large-scale applications needing standardized error responses with flexible formatting options                                           | Applications needing flexible, instance-based error customization                                                                        | Minimalist applications needing basic HTTP errors           |
+
+---
+
+> **Important Note:**
+>
+> -   If a global formatter is set, all error classes imported from `http-error-kit` work like `http-error-kit/http`.
+>
+> -   If no global formatter is set, all error classes imported from `http-error-kit` work like `http-error-kit/generic`.
+
+### Types of Formatter
+
+### 1. Global Formatter
+
+You can define a global formatter to standardize the structure of all error instances.
+
+```javascript
+const { KitHttpErrorConfig } = require("http-error-kit");
+
+KitHttpErrorConfig.configureFormatter(
+    (statusCode, message, details, ...args) => ({
+        code: statusCode,
+        msg: message,
+        extra: details,
+        traceId: args[0] || "0fcb44cb-4f09-4900-8c4f-73ddd37ffe0a",
+    })
+);
+```
+
+This formatter will be applied to all error instances imported from the default path (`http-error-kit`) and those from the `http-error-kit/http` path, unless an instance-level formatter is set.
+
+### 2. Instance-Level Formatter Override
+
+For specific cases, you can override the global formatter by setting an instance-level formatter.
+
+```javascript
+const { BadRequestError } = require("http-error-kit/http");
+
+const instanceFormatter = (statusCode, message, details, ...args) => ({
+    errorCode: statusCode,
+    errorMessage: message,
+    errorDetails: details,
+    requestId: args[0] || "instance-trace-id",
+});
+
+console.log(
+    new BadRequestError(
+        "Invalid request",
+        { field: "email" },
+        "trace-456"
+    ).setFormatter(instanceFormatter)
+);
+/*  BadRequestError {
+ *      errorCode: 400,
+ *      errorMessage: "Invalid request",
+ *      errorDetails: {
+ *          field: "email"
+ *      },
+ *      requestId: "trace-456"
+ *  }
+ */
+```
+
+This will override the global formatter **only for this instance**
+
+## Error Kit Overview
+
+### Common Error Classes
+
+#### 1. Bad Request Error
 
 Creates a new instance of the KitGeneralError class with a status code of 400, Bad Request.
 
-#### Parameters
+##### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 400. (e.g., `"Bad Request"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 400. (e.g., `"Bad Request"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { BadRequestError } = require('http-error-kit');
+const { BadRequestError } = require("http-error-kit");
 
 console.log(new BadRequestError("Bad Request", { field: "email" }));
 /*  BadRequestError {
@@ -152,20 +322,19 @@ console.log(new BadRequestError("Bad Request", { field: "email" }));
  */
 ```
 
-
-### 3. Unauthorized Error
+#### 2. Unauthorized Error
 
 Creates a new instance of the KitGeneralError class with a status code of 401, Unauthorized.
 
-#### Parameters
+##### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 401. (e.g., `"Unauthorized"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 401. (e.g., `"Unauthorized"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { UnauthorizedError } = require('http-error-kit');
+const { UnauthorizedError } = require("http-error-kit");
 
 console.log(new UnauthorizedError("Unauthorized", { field: "email" }));
 /*  UnauthorizedError {
@@ -178,19 +347,19 @@ console.log(new UnauthorizedError("Unauthorized", { field: "email" }));
  */
 ```
 
-### 4. Payment Required Error
+#### 3. Payment Required Error
 
 Creates a new instance of the KitGeneralError class with a status code of 402, Payment Required.
 
-#### Parameters
+##### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 402. (e.g., `"Payment Required"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 402. (e.g., `"Payment Required"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { PaymentRequiredError } = require('http-error-kit');
+const { PaymentRequiredError } = require("http-error-kit");
 
 console.log(new PaymentRequiredError("Payment Required", { field: "email" }));
 /*  PaymentRequiredError {
@@ -203,19 +372,19 @@ console.log(new PaymentRequiredError("Payment Required", { field: "email" }));
  */
 ```
 
-### 5. Forbidden Error
+#### 4. Forbidden Error
 
 Creates a new instance of the KitGeneralError class with a status code of 403, Forbidden.
 
-#### Parameters
+##### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 403. (e.g., `"Forbidden"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 403. (e.g., `"Forbidden"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { ForbiddenError } = require('http-error-kit');
+const { ForbiddenError } = require("http-error-kit");
 
 console.log(new ForbiddenError("Forbidden", { field: "email" }));
 /*  ForbiddenError {
@@ -228,19 +397,19 @@ console.log(new ForbiddenError("Forbidden", { field: "email" }));
  */
 ```
 
-### 6. Not Found Error
+#### 5. Not Found Error
 
 Creates a new instance of the KitGeneralError class with a status code of 404, Not Found.
 
-#### Parameters
+##### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 404. (e.g., `"Not Found"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 404. (e.g., `"Not Found"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { NotFoundError } = require('http-error-kit');
+const { NotFoundError } = require("http-error-kit");
 
 console.log(new NotFoundError("Not Found", { field: "email" }));
 /*  NotFoundError {
@@ -253,21 +422,23 @@ console.log(new NotFoundError("Not Found", { field: "email" }));
  */
 ```
 
-### 7. Method Not Allowed Error
+#### 6. Method Not Allowed Error
 
 Creates a new instance of the KitGeneralError class with a status code of 405, Method Not Allowed.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 405. (e.g., `"Method Not Allowed"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 405. (e.g., `"Method Not Allowed"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { MethodNotAllowedError } = require('http-error-kit');
+const { MethodNotAllowedError } = require("http-error-kit");
 
-console.log(new MethodNotAllowedError("Method Not Allowed", { field: "email" }));
+console.log(
+    new MethodNotAllowedError("Method Not Allowed", { field: "email" })
+);
 /*  MethodNotAllowedError {
  *      statusCode: 405,
  *      message: "Method Not Allowed",
@@ -278,19 +449,19 @@ console.log(new MethodNotAllowedError("Method Not Allowed", { field: "email" }))
  */
 ```
 
-### 8. Not Acceptable Error
+#### 7. Not Acceptable Error
 
 Creates a new instance of the KitGeneralError class with a status code of 406, Not Acceptable.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 406. (e.g., `"Not Acceptable"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 406. (e.g., `"Not Acceptable"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { NotAcceptableError } = require('http-error-kit');
+const { NotAcceptableError } = require("http-error-kit");
 
 console.log(new NotAcceptableError("Not Acceptable", { field: "email" }));
 /*  NotAcceptableError {
@@ -303,21 +474,25 @@ console.log(new NotAcceptableError("Not Acceptable", { field: "email" }));
  */
 ```
 
-### 9. Proxy Authentication Required Error
+#### 8. Proxy Authentication Required Error
 
 Creates a new instance of the KitGeneralError class with a status code of 407, Proxy Authentication Required.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 407. (e.g., `"Proxy Authentication Required"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 407. (e.g., `"Proxy Authentication Required"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { ProxyAuthenticationRequiredError } = require('http-error-kit');
+const { ProxyAuthenticationRequiredError } = require("http-error-kit");
 
-console.log(new ProxyAuthenticationRequiredError("Proxy Authentication Required", { field: "email" }));
+console.log(
+    new ProxyAuthenticationRequiredError("Proxy Authentication Required", {
+        field: "email",
+    })
+);
 /*  ProxyAuthenticationRequiredError {
  *      statusCode: 407,
  *      message: "Proxy Authentication Required",
@@ -328,19 +503,19 @@ console.log(new ProxyAuthenticationRequiredError("Proxy Authentication Required"
  */
 ```
 
-### 10. Request Timeout Error
+#### 9. Request Timeout Error
 
 Creates a new instance of the KitGeneralError class with a status code of 408, Request Timeout.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 408. (e.g., `"Request Timeout"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 408. (e.g., `"Request Timeout"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { RequestTimeoutError } = require('http-error-kit');
+const { RequestTimeoutError } = require("http-error-kit");
 
 console.log(new RequestTimeoutError("Request Timeout", { field: "email" }));
 /*  RequestTimeoutError {
@@ -353,19 +528,19 @@ console.log(new RequestTimeoutError("Request Timeout", { field: "email" }));
  */
 ```
 
-### 11. Conflict Error
+#### 10. Conflict Error
 
 Creates a new instance of the KitGeneralError class with a status code of 409, Conflict.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 409. (e.g., `"Conflict"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 409. (e.g., `"Conflict"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { ConflictError } = require('http-error-kit');
+const { ConflictError } = require("http-error-kit");
 
 console.log(new ConflictError("Conflict", { field: "email" }));
 /*  ConflictError {
@@ -378,19 +553,19 @@ console.log(new ConflictError("Conflict", { field: "email" }));
  */
 ```
 
-### 12. Gone Error
+#### 11. Gone Error
 
 Creates a new instance of the KitGeneralError class with a status code of 410, Gone.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 410. (e.g., `"Gone"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 410. (e.g., `"Gone"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { GoneError } = require('http-error-kit');
+const { GoneError } = require("http-error-kit");
 
 console.log(new GoneError("Gone", { field: "email" }));
 /*  GoneError {
@@ -403,19 +578,19 @@ console.log(new GoneError("Gone", { field: "email" }));
  */
 ```
 
-### 13. Length Required Error
+#### 12. Length Required Error
 
 Creates a new instance of the KitGeneralError class with a status code of 411, Length Required.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 411. (e.g., `"Length Required"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 411. (e.g., `"Length Required"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { LengthRequiredError } = require('http-error-kit');
+const { LengthRequiredError } = require("http-error-kit");
 
 console.log(new LengthRequiredError("Length Required", { field: "email" }));
 /*  LengthRequiredError {
@@ -428,21 +603,23 @@ console.log(new LengthRequiredError("Length Required", { field: "email" }));
  */
 ```
 
-### 14. Precondition Failed Error
+#### 13. Precondition Failed Error
 
 Creates a new instance of the KitGeneralError class with a status code of 412, Precondition Failed.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 412. (e.g., `"Precondition Failed"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 412. (e.g., `"Precondition Failed"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { PreconditionFailedError } = require('http-error-kit');
+const { PreconditionFailedError } = require("http-error-kit");
 
-console.log(new PreconditionFailedError("Precondition Failed", { field: "email" }));
+console.log(
+    new PreconditionFailedError("Precondition Failed", { field: "email" })
+);
 /*  PreconditionFailedError {
  *      statusCode: 412,
  *      message: "Precondition Failed",
@@ -453,21 +630,23 @@ console.log(new PreconditionFailedError("Precondition Failed", { field: "email" 
  */
 ```
 
-### 15. Request Entity Too Large Error
+#### 14. Request Entity Too Large Error
 
 Creates a new instance of the KitGeneralError class with a status code of 413, Request Entity Too Large.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 413. (e.g., `"Request Entity Too Large"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 413. (e.g., `"Request Entity Too Large"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { RequestTooLongError } = require('http-error-kit');
+const { RequestTooLongError } = require("http-error-kit");
 
-console.log(new RequestTooLongError("Request Entity Too Large", { field: "email" }));
+console.log(
+    new RequestTooLongError("Request Entity Too Large", { field: "email" })
+);
 /*  RequestTooLongError {
  *      statusCode: 413,
  *      message: "Request Entity Too Large",
@@ -478,21 +657,23 @@ console.log(new RequestTooLongError("Request Entity Too Large", { field: "email"
  */
 ```
 
-### 16. Request-URI Too Long Error
+#### 15. Request-URI Too Long Error
 
 Creates a new instance of the KitGeneralError class with a status code of 414, Request-URI Too Long.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 414. (e.g., `"Request-URI Too Long"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 414. (e.g., `"Request-URI Too Long"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { RequestUriTooLongError } = require('http-error-kit');
+const { RequestUriTooLongError } = require("http-error-kit");
 
-console.log(new RequestUriTooLongError("Request-URI Too Long", { field: "email" }));
+console.log(
+    new RequestUriTooLongError("Request-URI Too Long", { field: "email" })
+);
 /*  RequestUriTooLongError {
  *      statusCode: 414,
  *      message: "Request-URI Too Long",
@@ -503,21 +684,23 @@ console.log(new RequestUriTooLongError("Request-URI Too Long", { field: "email" 
  */
 ```
 
-### 17. Unsupported Media Type Error
+#### 16. Unsupported Media Type Error
 
 Creates a new instance of the KitGeneralError class with a status code of 415, Unsupported Media Type.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 415. (e.g., `"Unsupported Media Type"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 415. (e.g., `"Unsupported Media Type"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { UnsupportedMediaTypeError } = require('http-error-kit');
+const { UnsupportedMediaTypeError } = require("http-error-kit");
 
-console.log(new UnsupportedMediaTypeError("Unsupported Media Type", { field: "email" }));
+console.log(
+    new UnsupportedMediaTypeError("Unsupported Media Type", { field: "email" })
+);
 /*  UnsupportedMediaTypeError {
  *      statusCode: 415,
  *      message: "Unsupported Media Type",
@@ -528,21 +711,25 @@ console.log(new UnsupportedMediaTypeError("Unsupported Media Type", { field: "em
  */
 ```
 
-### 18. Requested Range Not Satisfiable Error
+#### 17. Requested Range Not Satisfiable Error
 
 Creates a new instance of the KitGeneralError class with a status code of 416, Requested Range Not Satisfiable.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 416. (e.g., `"Requested Range Not Satisfiable"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 416. (e.g., `"Requested Range Not Satisfiable"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { RequestedRangeNotSatisfiableError } = require('http-error-kit');
+const { RequestedRangeNotSatisfiableError } = require("http-error-kit");
 
-console.log(new RequestedRangeNotSatisfiableError("Requested Range Not Satisfiable", { field: "email" }));
+console.log(
+    new RequestedRangeNotSatisfiableError("Requested Range Not Satisfiable", {
+        field: "email",
+    })
+);
 /*  RequestedRangeNotSatisfiableError {
  *      statusCode: 416,
  *      message: "Requested Range Not Satisfiable",
@@ -553,21 +740,23 @@ console.log(new RequestedRangeNotSatisfiableError("Requested Range Not Satisfiab
  */
 ```
 
-### 19. Expectation Failed Error
+#### 18. Expectation Failed Error
 
 Creates a new instance of the KitGeneralError class with a status code of 417, Expectation Failed.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 417. (e.g., `"Expectation Failed"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 417. (e.g., `"Expectation Failed"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { ExpectationFailedError } = require('http-error-kit');
+const { ExpectationFailedError } = require("http-error-kit");
 
-console.log(new ExpectationFailedError("Expectation Failed", { field: "email" }));
+console.log(
+    new ExpectationFailedError("Expectation Failed", { field: "email" })
+);
 /*  ExpectationFailedError {
  *      statusCode: 417,
  *      message: "Expectation Failed",
@@ -578,19 +767,19 @@ console.log(new ExpectationFailedError("Expectation Failed", { field: "email" })
  */
 ```
 
-### 20. I'm a teapot Error
+#### 19. I'm a teapot Error
 
 Creates a new instance of the KitGeneralError class with a status code of 418, I'm a teapot.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 418. (e.g., `"I'm a teapot"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 418. (e.g., `"I'm a teapot"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { ImATeapotError } = require('http-error-kit');
+const { ImATeapotError } = require("http-error-kit");
 
 console.log(new ImATeapotError("I'm a teapot", { field: "email" }));
 /*  ImATeapotError {
@@ -603,21 +792,25 @@ console.log(new ImATeapotError("I'm a teapot", { field: "email" }));
  */
 ```
 
-### 21. Insufficient Space on Resource Error
+#### 20. Insufficient Space on Resource Error
 
 Creates a new instance of the KitGeneralError class with a status code of 419, Insufficient Space on Resource.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 419. (e.g., `"Insufficient Space on Resource"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 419. (e.g., `"Insufficient Space on Resource"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { InsufficientSpaceOnResourceError } = require('http-error-kit');
+const { InsufficientSpaceOnResourceError } = require("http-error-kit");
 
-console.log(new InsufficientSpaceOnResourceError("Insufficient Space on Resource", { field: "email" }));
+console.log(
+    new InsufficientSpaceOnResourceError("Insufficient Space on Resource", {
+        field: "email",
+    })
+);
 /*  InsufficientSpaceOnResourceError {
  *      statusCode: 419,
  *      message: "Insufficient Space on Resource",
@@ -628,19 +821,19 @@ console.log(new InsufficientSpaceOnResourceError("Insufficient Space on Resource
  */
 ```
 
-### 22. Method Failure Error
+#### 21. Method Failure Error
 
 Creates a new instance of the KitGeneralError class with a status code of 420, Method Failure.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 420. (e.g., `"Method Failure"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 420. (e.g., `"Method Failure"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { MethodFailureError } = require('http-error-kit');
+const { MethodFailureError } = require("http-error-kit");
 
 console.log(new MethodFailureError("Method Failure", { field: "email" }));
 /*  MethodFailureError {
@@ -653,21 +846,23 @@ console.log(new MethodFailureError("Method Failure", { field: "email" }));
  */
 ```
 
-### 23. Misdirected Request Error
+#### 22. Misdirected Request Error
 
 Creates a new instance of the KitGeneralError class with a status code of 421, Misdirected Request.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 421. (e.g., `"Misdirected Request"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 421. (e.g., `"Misdirected Request"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { MisdirectedRequestError } = require('http-error-kit');
+const { MisdirectedRequestError } = require("http-error-kit");
 
-console.log(new MisdirectedRequestError("Misdirected Request", { field: "email" }));
+console.log(
+    new MisdirectedRequestError("Misdirected Request", { field: "email" })
+);
 /*  MisdirectedRequestError {
  *      statusCode: 421,
  *      message: "Misdirected Request",
@@ -678,21 +873,23 @@ console.log(new MisdirectedRequestError("Misdirected Request", { field: "email" 
  */
 ```
 
-### 24. Unprocessable Entity Error
+#### 23. Unprocessable Entity Error
 
 Creates a new instance of the KitGeneralError class with a status code of 422, Unprocessable Entity.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 422. (e.g., `"Unprocessable Entity"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 422. (e.g., `"Unprocessable Entity"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { UnprocessableEntityError } = require('http-error-kit');
+const { UnprocessableEntityError } = require("http-error-kit");
 
-console.log(new UnprocessableEntityError("Unprocessable Entity", { field: "email" }));
+console.log(
+    new UnprocessableEntityError("Unprocessable Entity", { field: "email" })
+);
 /*  UnprocessableEntityError {
  *      statusCode: 422,
  *      message: "Unprocessable Entity",
@@ -703,19 +900,19 @@ console.log(new UnprocessableEntityError("Unprocessable Entity", { field: "email
  */
 ```
 
-### 25. Locked Error
+#### 24. Locked Error
 
 Creates a new instance of the KitGeneralError class with a status code of 423, Locked.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 423. (e.g., `"Locked"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 423. (e.g., `"Locked"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { LockedError } = require('http-error-kit');
+const { LockedError } = require("http-error-kit");
 
 console.log(new LockedError("Locked", { field: "email" }));
 /*  LockedError {
@@ -728,19 +925,19 @@ console.log(new LockedError("Locked", { field: "email" }));
  */
 ```
 
-### 26. Failed Dependency Error
+#### 25. Failed Dependency Error
 
 Creates a new instance of the KitGeneralError class with a status code of 424, Failed Dependency.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 424. (e.g., `"Failed Dependency"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 424. (e.g., `"Failed Dependency"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { FailedDependencyError } = require('http-error-kit');
+const { FailedDependencyError } = require("http-error-kit");
 
 console.log(new FailedDependencyError("Failed Dependency", { field: "email" }));
 /*  FailedDependencyError {
@@ -753,19 +950,19 @@ console.log(new FailedDependencyError("Failed Dependency", { field: "email" }));
  */
 ```
 
-### 27. Too Early Error
+#### 26. Too Early Error
 
 Creates a new instance of the KitGeneralError class with a status code of 425, Too Early.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 425. (e.g., `"Too Early"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 425. (e.g., `"Too Early"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { TooEarlyError } = require('http-error-kit');
+const { TooEarlyError } = require("http-error-kit");
 
 console.log(new TooEarlyError("Too Early", { field: "email" }));
 /*  TooEarlyError {
@@ -778,19 +975,19 @@ console.log(new TooEarlyError("Too Early", { field: "email" }));
  */
 ```
 
-### 28. Upgrade Required Error
+#### 27. Upgrade Required Error
 
 Creates a new instance of the KitGeneralError class with a status code of 426, Upgrade Required.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 426. (e.g., `"Upgrade Required"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 426. (e.g., `"Upgrade Required"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { UpgradeRequiredError } = require('http-error-kit');
+const { UpgradeRequiredError } = require("http-error-kit");
 
 console.log(new UpgradeRequiredError("Upgrade Required", { field: "email" }));
 /*  UpgradeRequiredError {
@@ -803,21 +1000,23 @@ console.log(new UpgradeRequiredError("Upgrade Required", { field: "email" }));
  */
 ```
 
-### 29. Precondition Required Error
+#### 28. Precondition Required Error
 
 Creates a new instance of the KitGeneralError class with a status code of 428, Precondition Required.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 428. (e.g., `"Precondition Required"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 428. (e.g., `"Precondition Required"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { PreconditionRequiredError } = require('http-error-kit');
+const { PreconditionRequiredError } = require("http-error-kit");
 
-console.log(new PreconditionRequiredError("Precondition Required", { field: "email" }));
+console.log(
+    new PreconditionRequiredError("Precondition Required", { field: "email" })
+);
 /*  PreconditionRequiredError {
  *      statusCode: 428,
  *      message: "Precondition Required",
@@ -828,19 +1027,19 @@ console.log(new PreconditionRequiredError("Precondition Required", { field: "ema
  */
 ```
 
-### 30. Too Many Requests Error
+#### 29. Too Many Requests Error
 
 Creates a new instance of the KitGeneralError class with a status code of 429, Too Many Requests.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 429. (e.g., `"Too Many Requests"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 429. (e.g., `"Too Many Requests"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { TooManyRequestsError } = require('http-error-kit');
+const { TooManyRequestsError } = require("http-error-kit");
 
 console.log(new TooManyRequestsError("Too Many Requests", { field: "email" }));
 /*  TooManyRequestsError {
@@ -853,21 +1052,25 @@ console.log(new TooManyRequestsError("Too Many Requests", { field: "email" }));
  */
 ```
 
-### 31. Request Header Fields Too Large Error
+#### 30. Request Header Fields Too Large Error
 
 Creates a new instance of the KitGeneralError class with a status code of 431, Request Header Fields Too Large.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 431. (e.g., `"Request Header Fields Too Large"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 431. (e.g., `"Request Header Fields Too Large"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { RequestHeaderFieldsTooLargeError } = require('http-error-kit');
+const { RequestHeaderFieldsTooLargeError } = require("http-error-kit");
 
-console.log(new RequestHeaderFieldsTooLargeError("Request Header Fields Too Large", { field: "email" }));
+console.log(
+    new RequestHeaderFieldsTooLargeError("Request Header Fields Too Large", {
+        field: "email",
+    })
+);
 /*  RequestHeaderFieldsTooLargeError {
  *      statusCode: 431,
  *      message: "Request Header Fields Too Large",
@@ -878,21 +1081,25 @@ console.log(new RequestHeaderFieldsTooLargeError("Request Header Fields Too Larg
  */
 ```
 
-### 32. Unavailable For Legal Reasons Error
+#### 31. Unavailable For Legal Reasons Error
 
 Creates a new instance of the KitGeneralError class with a status code of 451, Unavailable For Legal Reasons.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 451. (e.g., `"Unavailable For Legal Reasons"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 451. (e.g., `"Unavailable For Legal Reasons"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { UnavailableForLegalReasonsError } = require('http-error-kit');
+const { UnavailableForLegalReasonsError } = require("http-error-kit");
 
-console.log(new UnavailableForLegalReasonsError("Unavailable For Legal Reasons", { field: "email" }));
+console.log(
+    new UnavailableForLegalReasonsError("Unavailable For Legal Reasons", {
+        field: "email",
+    })
+);
 /*  UnavailableForLegalReasonsError {
  *      statusCode: 451,
  *      message: "Unavailable For Legal Reasons",
@@ -903,22 +1110,24 @@ console.log(new UnavailableForLegalReasonsError("Unavailable For Legal Reasons",
  */
 ```
 
-### 33. Internal Server Error
+#### 32. Internal Server Error
 
 Creates a new instance of the KitGeneralError class with a status code of 500, Internal Server Error.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 500. (e.g., `"Internal Server Error"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 500. (e.g., `"Internal Server Error"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { InternalServerErrorError } = require('http-error-kit');
+const { InternalServerError } = require("http-error-kit");
 
-console.log(new InternalServerErrorError("Internal Server Error", { field: "email" }));
-/*  InternalServerErrorError {
+console.log(
+    new InternalServerError("Internal Server Error", { field: "email" })
+);
+/*  InternalServerError {
  *      statusCode: 500,
  *      message: "Internal Server Error",
  *      details: {
@@ -928,19 +1137,19 @@ console.log(new InternalServerErrorError("Internal Server Error", { field: "emai
  */
 ```
 
-### 34. Not Implemented Error
+#### 33. Not Implemented Error
 
 Creates a new instance of the KitGeneralError class with a status code of 501, Not Implemented.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 501. (e.g., `"Not Implemented"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 501. (e.g., `"Not Implemented"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { NotImplementedError } = require('http-error-kit');
+const { NotImplementedError } = require("http-error-kit");
 
 console.log(new NotImplementedError("Not Implemented", { field: "email" }));
 /*  NotImplementedError {
@@ -953,19 +1162,19 @@ console.log(new NotImplementedError("Not Implemented", { field: "email" }));
  */
 ```
 
-### 35. Bad Gateway Error
+#### 34. Bad Gateway Error
 
 Creates a new instance of the KitGeneralError class with a status code of 502, Bad Gateway.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 502. (e.g., `"Bad Gateway"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 502. (e.g., `"Bad Gateway"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { BadGatewayError } = require('http-error-kit');
+const { BadGatewayError } = require("http-error-kit");
 
 console.log(new BadGatewayError("Bad Gateway", { field: "email" }));
 /*  BadGatewayError {
@@ -978,21 +1187,23 @@ console.log(new BadGatewayError("Bad Gateway", { field: "email" }));
  */
 ```
 
-### 36. Service Unavailable Error
+#### 35. Service Unavailable Error
 
 Creates a new instance of the KitGeneralError class with a status code of 503, Service Unavailable.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 503. (e.g., `"Service Unavailable"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 503. (e.g., `"Service Unavailable"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { ServiceUnavailableError } = require('http-error-kit');
+const { ServiceUnavailableError } = require("http-error-kit");
 
-console.log(new ServiceUnavailableError("Service Unavailable", { field: "email" }));
+console.log(
+    new ServiceUnavailableError("Service Unavailable", { field: "email" })
+);
 /*  ServiceUnavailableError {
  *      statusCode: 503,
  *      message: "Service Unavailable",
@@ -1003,19 +1214,19 @@ console.log(new ServiceUnavailableError("Service Unavailable", { field: "email" 
  */
 ```
 
-### 37. Gateway Timeout Error
+#### 36. Gateway Timeout Error
 
 Creates a new instance of the KitGeneralError class with a status code of 504, Gateway Timeout.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 504. (e.g., `"Gateway Timeout"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 504. (e.g., `"Gateway Timeout"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { GatewayTimeoutError } = require('http-error-kit');
+const { GatewayTimeoutError } = require("http-error-kit");
 
 console.log(new GatewayTimeoutError("Gateway Timeout", { field: "email" }));
 /*  GatewayTimeoutError {
@@ -1028,21 +1239,25 @@ console.log(new GatewayTimeoutError("Gateway Timeout", { field: "email" }));
  */
 ```
 
-### 38. HTTP Version Not Supported Error
+#### 37. HTTP Version Not Supported Error
 
 Creates a new instance of the KitGeneralError class with a status code of 505, HTTP Version Not Supported.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 505. (e.g., `"HTTP Version Not Supported"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 505. (e.g., `"HTTP Version Not Supported"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { HttpVersionNotSupportedError } = require('http-error-kit');
+const { HttpVersionNotSupportedError } = require("http-error-kit");
 
-console.log(new HttpVersionNotSupportedError("HTTP Version Not Supported", { field: "email" }));
+console.log(
+    new HttpVersionNotSupportedError("HTTP Version Not Supported", {
+        field: "email",
+    })
+);
 /*  HttpVersionNotSupportedError {
  *      statusCode: 505,
  *      message: "HTTP Version Not Supported",
@@ -1053,21 +1268,25 @@ console.log(new HttpVersionNotSupportedError("HTTP Version Not Supported", { fie
  */
 ```
 
-### 39. Variant Also Negotiates Error
+#### 38. Variant Also Negotiates Error
 
 Creates a new instance of the KitGeneralError class with a status code of 506, Variant Also Negotiates.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 506. (e.g., `"Variant Also Negotiates"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 506. (e.g., `"Variant Also Negotiates"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { VariantAlsoNegotiatesError } = require('http-error-kit');
+const { VariantAlsoNegotiatesError } = require("http-error-kit");
 
-console.log(new VariantAlsoNegotiatesError("Variant Also Negotiates", { field: "email" }));
+console.log(
+    new VariantAlsoNegotiatesError("Variant Also Negotiates", {
+        field: "email",
+    })
+);
 /*  VariantAlsoNegotiatesError {
  *      statusCode: 506,
  *      message: "Variant Also Negotiates",
@@ -1078,21 +1297,23 @@ console.log(new VariantAlsoNegotiatesError("Variant Also Negotiates", { field: "
  */
 ```
 
-### 40. Insufficient Storage Error
+#### 39. Insufficient Storage Error
 
 Creates a new instance of the KitGeneralError class with a status code of 507, Insufficient Storage.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 507. (e.g., `"Insufficient Storage"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 507. (e.g., `"Insufficient Storage"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { InsufficientStorageError } = require('http-error-kit');
+const { InsufficientStorageError } = require("http-error-kit");
 
-console.log(new InsufficientStorageError("Insufficient Storage", { field: "email" }));
+console.log(
+    new InsufficientStorageError("Insufficient Storage", { field: "email" })
+);
 /*  InsufficientStorageError {
  *      statusCode: 507,
  *      message: "Insufficient Storage",
@@ -1103,19 +1324,19 @@ console.log(new InsufficientStorageError("Insufficient Storage", { field: "email
  */
 ```
 
-### 41. Loop Detected Error
+#### 40. Loop Detected Error
 
 Creates a new instance of the KitGeneralError class with a status code of 508, Loop Detected.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 508. (e.g., `"Loop Detected"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 508. (e.g., `"Loop Detected"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { LoopDetectedError } = require('http-error-kit');
+const { LoopDetectedError } = require("http-error-kit");
 
 console.log(new LoopDetectedError("Loop Detected", { field: "email" }));
 /*  LoopDetectedError {
@@ -1128,19 +1349,19 @@ console.log(new LoopDetectedError("Loop Detected", { field: "email" }));
  */
 ```
 
-### 42. Not Extended Error
+#### 41. Not Extended Error
 
 Creates a new instance of the KitGeneralError class with a status code of 510, Not Extended.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 510. (e.g., `"Not Extended"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 510. (e.g., `"Not Extended"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { NotExtendedError } = require('http-error-kit');
+const { NotExtendedError } = require("http-error-kit");
 
 console.log(new NotExtendedError("Not Extended", { field: "email" }));
 /*  NotExtendedError {
@@ -1153,21 +1374,25 @@ console.log(new NotExtendedError("Not Extended", { field: "email" }));
  */
 ```
 
-### 43. Network Authentication Required Error
+#### 42. Network Authentication Required Error
 
 Creates a new instance of the KitGeneralError class with a status code of 511, Network Authentication Required.
 
-#### Parameters
+###### Parameters
 
-- `message` (`string`): The error message. Defaults to the HTTP status code description for 511. (e.g., `"Network Authentication Required"`).
-- `details` (`any`): Additional details about the error, if any.
+-   `message` (`string`): The error message. Defaults to the HTTP status code description for 511. (e.g., `"Network Authentication Required"`).
+-   `details` (`any`): Additional details about the error, if any.
 
-### Example
+##### Example
 
 ```javascript
-var { NetworkAuthenticationRequiredError } = require('http-error-kit');
+const { NetworkAuthenticationRequiredError } = require("http-error-kit");
 
-console.log(new NetworkAuthenticationRequiredError("Network Authentication Required", { field: "email" }));
+console.log(
+    new NetworkAuthenticationRequiredError("Network Authentication Required", {
+        field: "email",
+    })
+);
 /*  NetworkAuthenticationRequiredError {
  *      statusCode: 511,
  *      message: "Network Authentication Required",
@@ -1178,29 +1403,61 @@ console.log(new NetworkAuthenticationRequiredError("Network Authentication Requi
  */
 ```
 
-### 44. Kit Http Error
+### Special Error Classes
+
+#### 43. Kit General Error
 
 Represents a general error with a status code, message, and optional details.
 
-#### Parameters
+> ✅ **Available in**: `http-error-kit` and `http-error-kit/generic`
 
-- `statusCode` (`number`): The HTTP status code associated with the error (e.g., `500`).
-- `message` (`string`): A human-readable error message. (e.g., `"Internal Server Error"`).
-- `details` (`any`): Additional details about the error, if any.
-- `formatter` (`function`): A custom formatter function that can be used to format the error details.
+###### Parameters
 
-### Example
+-   `statusCode` (`number`): The HTTP status code associated with the error (e.g., `500`).
+-   `message` (`string`): A human-readable error message. (e.g., `"Internal Server Error"`).
+-   `details` (`any`): Additional details about the error, if any.
+
+##### Example
+
+```javascript
+const { KitGeneralError } = require("http-error-kit");
+
+console.log(
+    new KitGeneralError(500, "Internal Server Error", { field: "email" })
+);
+/*  KitGeneralError {
+ *      statusCode: 500,
+ *      message: "Internal Server Error",
+ *      details: {
+ *          field: "email"
+ *      }
+ *  }
+ */
+```
+
+#### 44. Kit Http Error
+
+Represents a general error with a status code, message, and optional details.
+
+> ✅ **Available in**: `http-error-kit` and `http-error-kit/http`
+
+###### Parameters
+
+-   `statusCode` (`number`): The HTTP status code associated with the error (e.g., `500`).
+-   `message` (`string`): A human-readable error message. (e.g., `"Internal Server Error"`).
+-   `details` (`any`): Additional details about the error, if any.
+
+##### Example
 
 ```javascript
 const formatter = (statusCode, message, details, ...args) => ({
     code: statusCode,
     msg: message,
     extra: details,
-    traceId: args[0] || "default-trace-id"
+    traceId: args[0] || "default-trace-id",
 });
 
-const errorKit = new KitHttpError(400, "Bad Request", {}, formatter);
-console.log(errorKit.BadRequestError("Invalid request", { field: "email" }, '0fcb44cb-4f09-4900-8c4f-73ddd37ffe0a'));
+console.log(new KitHttpError(400, "Bad Request", {}).setFormatter(formatter));
 /*  KitHttpError {
  *      code: 400,
  *      msg: "Invalid request",
@@ -1218,13 +1475,13 @@ The original author of the project is [Himanshu Bansal][skillnter]
 
 ## Donations
 
-**This is all voluntary work**, so if you want to support my efforts you can 
+**This is all voluntary work**, so if you want to support my efforts you can
 
-- [Buy Me A Coffee](https://www.buymeacoffee.com/skillnter)
-- [Paypal](https://www.paypal.me/skillnte)
-- [GitHub Sponsor](https://github.com/sponsors/Skillnter)
-- [Patreon](https://www.patreon.com/skillnter)
-- [Open Collective](https://opencollective.com/http-error-kit)
+-   [Buy Me A Coffee](https://www.buymeacoffee.com/skillnter)
+-   [Paypal](https://www.paypal.me/skillnte)
+-   [GitHub Sponsor](https://github.com/sponsors/Skillnter)
+-   [Patreon](https://www.patreon.com/skillnter)
+-   [Open Collective](https://opencollective.com/http-error-kit)
 
 You can also use the following:
 
