@@ -154,7 +154,7 @@ export class KitHttpError extends Error {
      */
     toJSON() {
         const formatter =
-            this.instanceFormatter || KitHttpError.defaultFormatter;
+            this.instanceFormatter ?? KitHttpError.defaultFormatter;
         if (formatter) {
             return formatter(
                 this.rawInputs.statusCode,
