@@ -9,6 +9,16 @@
         "./generic": "./dist/general.error.js",
         "./http": "./dist/http.error.js"
     },
+    "typesVersions": {
+        "*": {
+            "generic": [
+                "./dist/general.error.d.ts"
+            ],
+            "http": [
+                "./dist/http.error.d.ts"
+            ]
+        }
+    },
     "scripts": {
         "test": "jest --config jest.config.ts",
         "build": "tsc --build",

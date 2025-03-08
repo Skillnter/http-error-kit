@@ -2,6 +2,7 @@ import {
     CODES as STATUS_CODES,
     getStatusDescription,
 } from "http-response-status-code";
+import { IRawInput } from "./interfaces/input.interface";
 
 /**
  * Represents a general error with a status code, message, and optional details.
@@ -27,6 +28,13 @@ export class KitGeneralError extends Error {
     details: unknown;
 
     /**
+     * The raw input data associated with this instance.
+     * @private
+     * @type {IRawInput}
+     */
+    private rawInputs: IRawInput;
+
+    /**
      * Initializes a new instance of the KitGeneralError class.
      * @param {number} statusCode - The HTTP status code associated with the error.
      * @param {string} message - A human-readable error message.
@@ -38,6 +46,28 @@ export class KitGeneralError extends Error {
         this.statusCode = statusCode;
         this.message = message.toString();
         this.details = details;
+        this.rawInputs = { statusCode, message, details, args: [] };
+        Object.setPrototypeOf(this, KitGeneralError.prototype);
+    }
+
+    /**
+     * Returns the raw input data associated with this instance.
+     * @returns {IRawInput} The raw input data associated with this instance.
+     */
+    getInputs() {
+        return this.rawInputs;
+    }
+
+    /**
+     * Returns a JSON-compatible object representation of this instance.
+     * @returns {{statusCode: number, message: string, details: unknown}} A JSON-compatible object representation of this instance.
+     */
+    toJSON() {
+        return {
+            statusCode: this.statusCode,
+            message: this.message,
+            details: this.details,
+        };
     }
 }
 
