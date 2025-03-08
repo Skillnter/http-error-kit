@@ -1,6 +1,6 @@
 {
     "name": "http-error-kit",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "A flexible and customizable error-handling library for HTTP applications. Provides structured error responses with optional formatters, predefined HTTP errors, and extensible error types.",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
