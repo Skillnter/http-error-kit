@@ -54,6 +54,30 @@ describe("*** Testing KitGeneralError ***", function () {
         expect(test instanceof KitGeneralError);
         expect(test.message).toBe("Testing KitGeneralError");
     });
+    it("Should return raw inputs", function () {
+        const test = new KitGeneralError(
+            STATUS_CODES.CODES.HTTP_CODE_400,
+            "Testing KitGeneralError"
+        );
+        const rawInputs = test.getInputs();
+        expect(test instanceof KitGeneralError);
+        expect(typeof rawInputs).toBe("object");
+        expect(rawInputs.statusCode).toBe(STATUS_CODES.CODES.HTTP_CODE_400);
+        expect(rawInputs.message).toBe("Testing KitGeneralError");
+        expect(rawInputs.details).toBe(undefined);
+    });
+    it("Should return proper serialized inputs", function () {
+        const test = new KitGeneralError(
+            STATUS_CODES.CODES.HTTP_CODE_400,
+            "Testing KitGeneralError"
+        );
+        const json = JSON.parse(JSON.stringify(test));
+        expect(test instanceof KitGeneralError);
+        expect(typeof json).toBe("object");
+        expect(json.statusCode).toBe(STATUS_CODES.CODES.HTTP_CODE_400);
+        expect(json.message).toBe("Testing KitGeneralError");
+        expect(json.details).toBe(undefined);
+    });
 });
 
 describe("*** Testing BadRequestError ***", function () {

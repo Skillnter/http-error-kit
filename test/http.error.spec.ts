@@ -1163,6 +1163,39 @@ describe("*** Testing KitHttpError ***", function () {
         expect(error.msg).toBe("Testing KitHttpError");
         expect(error.details).toEqual({});
     });
+    it("Should return raw inputs with additional arguments", function () {
+        const test = new KitHttpError(
+            STATUS_CODES.HTTP_CODE_400,
+            "Testing KitHttpError",
+            {},
+            "argument1",
+            "argument2"
+        );
+        const rawInputs = test.getInputs();
+        expect(test instanceof KitHttpError);
+        expect(typeof rawInputs).toBe("object");
+        expect(rawInputs.statusCode).toBe(STATUS_CODES.HTTP_CODE_400);
+        expect(rawInputs.message).toBe("Testing KitHttpError");
+        expect(rawInputs.details).toStrictEqual({});
+        expect(rawInputs.args).toBeInstanceOf(Array);
+        expect(rawInputs.args).toEqual(["argument1", "argument2"]);
+    });
+    it("Should return proper serialized inputs", function () {
+        const test = new KitHttpError(
+            STATUS_CODES.HTTP_CODE_400,
+            "Testing KitHttpError",
+            {},
+            "argument1",
+            "argument2"
+        );
+        const json = JSON.parse(JSON.stringify(test));
+        console.log(json);
+        expect(test instanceof KitHttpError);
+        expect(typeof json).toBe("object");
+        expect(json.statusCode).toBe(STATUS_CODES.HTTP_CODE_400);
+        expect(json.message).toBe("Testing KitHttpError");
+        expect(json.details).toStrictEqual({});
+    });
 });
 
 describe("*** Testing KitHttpErrorConfig ***", function () {
@@ -1185,6 +1218,11 @@ describe("*** Testing KitHttpErrorConfig ***", function () {
 
 describe("*** Testing KitHttpError with global formatter ***", function () {
     it("Should be an instance of KitHttpError when no formatter is provided", function () {
+        KitHttpErrorConfig.configureFormatter(
+            (statusCode, message, details, ...args) => ({
+                list: args,
+            })
+        );
         const error = new KitHttpError(
             STATUS_CODES.HTTP_CODE_400,
             "Testing KitHttpError",
@@ -1193,5 +1231,47 @@ describe("*** Testing KitHttpError with global formatter ***", function () {
         );
         expect(error instanceof KitHttpError);
         expect(error.list).toEqual(["kit2"]);
+    });
+    it("Should return raw inputs", function () {
+        KitHttpErrorConfig.configureFormatter(() => {});
+        const test = new KitHttpError(
+            STATUS_CODES.HTTP_CODE_400,
+            "Testing KitHttpError"
+        );
+        const rawInputs = test.getInputs();
+        expect(test instanceof KitHttpError);
+        expect(typeof rawInputs).toBe("object");
+        expect(rawInputs.statusCode).toBe(STATUS_CODES.HTTP_CODE_400);
+        expect(rawInputs.message).toBe("Testing KitHttpError");
+        expect(rawInputs.details).toBe(undefined);
+        expect(rawInputs.args).toStrictEqual([]);
+    });
+    it("Should return proper serialized inputs", function () {
+        KitHttpErrorConfig.configureFormatter(
+            (statusCode, message, details, ...args) => {
+                return {
+                    code: statusCode,
+                    msg: message,
+                    det: details,
+                    arg1: args[0],
+                    arg2: args[1],
+                };
+            }
+        );
+        const test = new KitHttpError(
+            STATUS_CODES.HTTP_CODE_400,
+            "Testing KitHttpError",
+            {},
+            "argument1",
+            "argument2"
+        );
+        const json = JSON.parse(JSON.stringify(test));
+        expect(test instanceof KitHttpError);
+        expect(typeof json).toBe("object");
+        expect(json.code).toBe(STATUS_CODES.HTTP_CODE_400);
+        expect(json.msg).toBe("Testing KitHttpError");
+        expect(json.det).toStrictEqual({});
+        expect(json.arg1).toBe("argument1");
+        expect(json.arg2).toBe("argument2");
     });
 });

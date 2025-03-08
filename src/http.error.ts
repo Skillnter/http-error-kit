@@ -136,6 +136,39 @@ export class KitHttpError extends Error {
 
         return this;
     }
+
+    /**
+     * Returns the raw input data associated with this instance.
+     * @returns {IRawInput} The raw input data associated with this instance.
+     */
+    getInputs() {
+        return this.rawInputs;
+    }
+
+    /**
+     * Returns a JSON-compatible object representation of this instance.
+     * If a formatter function is provided (either globally or instance-specific),
+     * it will be used to format the error details.
+     * Otherwise, the object will contain the `statusCode`, `message`, and `details` properties.
+     * @returns {{statusCode: number, message: string, details: unknown}} A JSON-compatible object representation of this instance.
+     */
+    toJSON() {
+        const formatter =
+            this.instanceFormatter ?? KitHttpError.defaultFormatter;
+        if (formatter) {
+            return formatter(
+                this.rawInputs.statusCode,
+                this.rawInputs.message,
+                this.rawInputs.details,
+                ...this.rawInputs.args
+            );
+        }
+        return {
+            statusCode: this.rawInputs.statusCode,
+            message: this.rawInputs.message,
+            details: this.rawInputs.details,
+        };
+    }
 }
 
 /**
