@@ -1189,12 +1189,26 @@ describe("*** Testing KitHttpError ***", function () {
             "argument2"
         );
         const json = JSON.parse(JSON.stringify(test));
-        console.log(json);
         expect(test instanceof KitHttpError);
         expect(typeof json).toBe("object");
         expect(json.statusCode).toBe(STATUS_CODES.HTTP_CODE_400);
         expect(json.message).toBe("Testing KitHttpError");
         expect(json.details).toStrictEqual({});
+    });
+    it("Should return formatted serialized inputs when instance formatter is provided", function () {
+        const test = new KitHttpError(
+            STATUS_CODES.HTTP_CODE_400,
+            "Testing KitHttpError",
+            { test: true }
+        ).setFormatter((statusCode, message, details) => ({
+            code: statusCode,
+            msg: message,
+            det: details,
+        }));
+        const json = JSON.parse(JSON.stringify(test));
+        expect(json.code).toBe(STATUS_CODES.HTTP_CODE_400);
+        expect(json.msg).toBe("Testing KitHttpError");
+        expect(json.det).toStrictEqual({ test: true });
     });
 });
 
@@ -1213,6 +1227,16 @@ describe("*** Testing KitHttpErrorConfig ***", function () {
         const isFormatterSet = KitHttpErrorConfig.shouldUseKitHttpErrors();
         expect(typeof isFormatterSet).toBe("boolean");
         expect(isFormatterSet).toBe(true);
+    });
+    it("Should reset global formatter state when resetFormatter is called", function () {
+        KitHttpErrorConfig.configureFormatter(
+            (statusCode, message, details, ...args) => ({
+                list: args,
+            })
+        );
+        expect(KitHttpErrorConfig.shouldUseKitHttpErrors()).toBe(true);
+        KitHttpErrorConfig.resetFormatter();
+        expect(KitHttpErrorConfig.shouldUseKitHttpErrors()).toBe(false);
     });
 });
 
