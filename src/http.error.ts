@@ -110,9 +110,10 @@ export class KitHttpError extends Error {
     /**
      * Configures a global formatter function for all instances of KitHttpError.
      * This formatter will be used to format error details unless an instance-specific formatter is provided.
-     * @param {(statusCode: number, message: string, details?: unknown, ...args: unknown[]) => unknown} formatter - A function to format error details, which takes the status code, message, optional details, and additional arguments as parameters.
+     * @param {(statusCode: number, message: string, details?: unknown, ...args: unknown[]) => unknown} [formatter] - A function to format error details, which takes the status code, message, optional details, and additional arguments as parameters.
+     * @returns {void} Does not return a value.
      */
-    static _configureFormatter(formatter: IFormatter): void {
+    static _configureFormatter(formatter?: IFormatter): void {
         KitHttpError.defaultFormatter = formatter;
     }
 
@@ -181,6 +182,7 @@ export class KitHttpErrorConfig {
      * This formatter will be used to format error details unless an instance-specific formatter is provided.
      * When this method is called, KitHttpError-based errors will be used globally.
      * @param {(statusCode: number, message: string, details?: unknown, ...args: unknown[]) => unknown} formatter - A function to format error details, which takes the status code, message, optional details, and additional arguments as parameters.
+     * @returns {void} Does not return a value.
      */
     static configureFormatter(formatter: IFormatter): void {
         KitHttpError._configureFormatter(formatter);
@@ -194,6 +196,16 @@ export class KitHttpErrorConfig {
      */
     static shouldUseKitHttpErrors(): boolean {
         return useKitHttpErrors;
+    }
+
+    /**
+     * Resets the global formatter function and disables KitHttpError-based errors globally.
+     * 
+     * @returns {void} Does not return a value.
+     */
+    static resetFormatter(): void {
+        KitHttpError._configureFormatter(undefined);
+        useKitHttpErrors = false;
     }
 }
 
@@ -215,8 +227,8 @@ export class BadRequestError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_400 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_400).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_400).toString(),
             details,
             ...args
         );
@@ -242,8 +254,8 @@ export class UnauthorizedError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_401 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_401).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_401).toString(),
             details,
             ...args
         );
@@ -268,8 +280,8 @@ export class PaymentRequiredError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_402 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_402).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_402).toString(),
             details,
             ...args
         );
@@ -294,8 +306,8 @@ export class ForbiddenError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_403 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_403).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_403).toString(),
             details,
             ...args
         );
@@ -320,8 +332,8 @@ export class NotFoundError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_404 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_404).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_404).toString(),
             details,
             ...args
         );
@@ -346,8 +358,8 @@ export class MethodNotAllowedError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_405 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_405).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_405).toString(),
             details,
             ...args
         );
@@ -372,8 +384,8 @@ export class NotAcceptableError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_406 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_406).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_406).toString(),
             details,
             ...args
         );
@@ -398,8 +410,8 @@ export class ProxyAuthenticationRequiredError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_407 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_407).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_407).toString(),
             details,
             ...args
         );
@@ -424,8 +436,8 @@ export class RequestTimeoutError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_408 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_408).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_408).toString(),
             details,
             ...args
         );
@@ -450,8 +462,8 @@ export class ConflictError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_409 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_409).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_409).toString(),
             details,
             ...args
         );
@@ -476,8 +488,8 @@ export class GoneError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_410 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_410).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_410).toString(),
             details,
             ...args
         );
@@ -502,8 +514,8 @@ export class LengthRequiredError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_411 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_411).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_411).toString(),
             details,
             ...args
         );
@@ -528,8 +540,8 @@ export class PreconditionFailedError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_412 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_412).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_412).toString(),
             details,
             ...args
         );
@@ -554,8 +566,8 @@ export class RequestTooLongError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_413 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_413).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_413).toString(),
             details,
             ...args
         );
@@ -580,8 +592,8 @@ export class RequestUriTooLongError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_414 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_414).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_414).toString(),
             details,
             ...args
         );
@@ -606,8 +618,8 @@ export class UnsupportedMediaTypeError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_415 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_415).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_415).toString(),
             details,
             ...args
         );
@@ -632,8 +644,8 @@ export class RequestedRangeNotSatisfiableError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_416 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_416).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_416).toString(),
             details,
             ...args
         );
@@ -661,8 +673,8 @@ export class ExpectationFailedError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_417 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_417).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_417).toString(),
             details,
             ...args
         );
@@ -687,8 +699,8 @@ export class ImATeapotError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_418 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_418).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_418).toString(),
             details,
             ...args
         );
@@ -713,8 +725,8 @@ export class InsufficientSpaceOnResourceError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_419 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_419).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_419).toString(),
             details,
             ...args
         );
@@ -739,8 +751,8 @@ export class MethodFailureError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_420 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_420).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_420).toString(),
             details,
             ...args
         );
@@ -765,8 +777,8 @@ export class MisdirectedRequestError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_421 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_421).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_421).toString(),
             details,
             ...args
         );
@@ -791,8 +803,8 @@ export class UnprocessableEntityError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_422 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_422).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_422).toString(),
             details,
             ...args
         );
@@ -817,8 +829,8 @@ export class LockedError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_423 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_423).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_423).toString(),
             details,
             ...args
         );
@@ -843,8 +855,8 @@ export class FailedDependencyError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_424 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_424).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_424).toString(),
             details,
             ...args
         );
@@ -869,8 +881,8 @@ export class TooEarlyError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_425 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_425).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_425).toString(),
             details,
             ...args
         );
@@ -895,8 +907,8 @@ export class UpgradeRequiredError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_426 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_426).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_426).toString(),
             details,
             ...args
         );
@@ -921,8 +933,8 @@ export class PreconditionRequiredError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_428 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_428).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_428).toString(),
             details,
             ...args
         );
@@ -947,8 +959,8 @@ export class TooManyRequestsError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_429 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_429).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_429).toString(),
             details,
             ...args
         );
@@ -973,8 +985,8 @@ export class RequestHeaderFieldsTooLargeError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_431 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_431).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_431).toString(),
             details,
             ...args
         );
@@ -999,8 +1011,8 @@ export class UnavailableForLegalReasonsError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_451 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_451).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_451).toString(),
             details,
             ...args
         );
@@ -1025,8 +1037,8 @@ export class InternalServerError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_500 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_500).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_500).toString(),
             details,
             ...args
         );
@@ -1051,8 +1063,8 @@ export class NotImplementedError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_501 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_501).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_501).toString(),
             details,
             ...args
         );
@@ -1077,8 +1089,8 @@ export class BadGatewayError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_502 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_502).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_502).toString(),
             details,
             ...args
         );
@@ -1103,8 +1115,8 @@ export class ServiceUnavailableError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_503 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_503).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_503).toString(),
             details,
             ...args
         );
@@ -1129,8 +1141,8 @@ export class GatewayTimeoutError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_504 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_504).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_504).toString(),
             details,
             ...args
         );
@@ -1155,8 +1167,8 @@ export class HttpVersionNotSupportedError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_505 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_505).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_505).toString(),
             details,
             ...args
         );
@@ -1181,8 +1193,8 @@ export class VariantAlsoNegotiatesError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_506 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_506).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_506).toString(),
             details,
             ...args
         );
@@ -1207,8 +1219,8 @@ export class InsufficientStorageError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_507 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_507).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_507).toString(),
             details,
             ...args
         );
@@ -1233,8 +1245,8 @@ export class LoopDetectedError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_508 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_508).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_508).toString(),
             details,
             ...args
         );
@@ -1259,8 +1271,8 @@ export class NotExtendedError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_510 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_510).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_510).toString(),
             details,
             ...args
         );
@@ -1285,8 +1297,8 @@ export class NetworkAuthenticationRequiredError extends KitHttpError {
             STATUS_CODES.HTTP_CODE_511 as number,
             /* eslint-disable-next-line */
             message ??
-                /* eslint-disable-next-line */
-                getStatusDescription(STATUS_CODES.HTTP_CODE_511).toString(),
+            /* eslint-disable-next-line */
+            getStatusDescription(STATUS_CODES.HTTP_CODE_511).toString(),
             details,
             ...args
         );

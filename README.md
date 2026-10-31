@@ -4,13 +4,15 @@
 
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/skillnter/http-error-kit/main.yml)
 [![npm version](https://img.shields.io/npm/v/http-error-kit?color=brightgreen)](https://www.npmjs.com/package/http-error-kit)
+[![Dependencies](https://img.shields.io/badge/dependencies-1-brightgreen.svg)](https://www.npmjs.com/package/http-error-kit)
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/http-error-kit)](https://bundlephobia.com/package/http-error-kit)
 [![GitHub license](https://img.shields.io/github/license/skillnter/http-error-kit?color=brightgreen)](LICENSE)
 [![GitHub Issues](https://img.shields.io/github/issues/Skillnter/http-error-kit)](https://github.com/Skillnter/http-error-kit/issues)
 [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/b55bf0140f674909814b8baea8ec8b16)](https://app.codacy.com/gh/Skillnter/http-error-kit/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/b55bf0140f674909814b8baea8ec8b16)](https://app.codacy.com/gh/Skillnter/http-error-kit/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 ![npms.io (final)](https://img.shields.io/npms-io/maintenance-score/http-error-kit?color=brightgreen)
 ![npm](https://img.shields.io/npm/dy/http-error-kit)
-[![Socket Badge](https://socket.dev/api/badge/npm/package/http-error-kit/1.7.5)](https://socket.dev/npm/package/http-error-kit/overview/1.0.0)
+[![Socket Badge](https://socket.dev/api/badge/npm/package/http-error-kit/1.2.0)](https://socket.dev/npm/package/http-error-kit/overview/1.2.0)
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-121013?logo=github&logoColor=white)](https://skillnter.github.io/http-error-kit/)
 [![Github Sponsors](https://img.shields.io/badge/GitHub%20Sponsors-30363D?&logo=GitHub-Sponsors&logoColor=EA4AAA)](https://github.com/sponsors/Skillnter)
 [![Open Collective](https://img.shields.io/badge/Open%20Collective-3385FF?logo=open-collective&logoColor=white)](https://opencollective.com/http-error-kit)
@@ -20,14 +22,17 @@
 
 ## Features
 
--   Predefined HTTP error classes (e.g., `NotFoundError`, `BadRequestError`, `InternalServerError`, etc.)
--   Customizable error formatting
--   Consistent error structure across applications
--   Works seamlessly with TypeScript
+-   **Class-Based & Type-Safe**: True `class` hierarchy (`NotFoundError`, `BadRequestError`, etc.) with accurate `instanceof` narrowing.
+-   **Customizable Formatters**: Format error responses globally or per-instance (JSON, RFC 7807 Problem Details, custom fields).
+-   **Lightweight**: Only 1 lightweight runtime dependency ([`http-response-status-code`](https://github.com/Skillnter/http-response-status-code)).
+-   **Tree-Shakeable**: Import only what you use with zero extra bloat in your bundle.
+-   **TypeScript First**: Full typing for status codes, messages, formatters, and metadata out of the box.
+-   **Universal**: Seamless error handling across Express, Fastify, Hono, Next.js, and pure Node.js.
 
 ## Table of Content
 
 -   [Installation](#installation)
+-   [Framework Integration](#framework-integration)
 -   [Usage](#usage)
     -   [1. Dynamic Formatting ( Default )](#1-dynamic-formatting--default-)
     -   [2. Generic HTTP Errors](#2-generic-http-errors)
@@ -93,6 +98,63 @@
 
 ```console
 npm install http-error-kit
+```
+
+## Framework Integration
+
+Easily handle errors across popular backend frameworks and modern web runtimes:
+
+### Express
+
+```typescript
+import { KitHttpError, NotFoundError } from "http-error-kit";
+
+// Route throwing an error
+app.get("/users/:id", (req, res) => {
+    throw new NotFoundError("User not found", { userId: req.params.id });
+});
+
+// Global error handler middleware
+app.use((err, req, res, next) => {
+    if (err instanceof KitHttpError) {
+        return res.status(err.statusCode || 500).json(err);
+    }
+    res.status(500).json({ message: "Internal Server Error" });
+});
+```
+
+### Next.js (App Router Route Handlers)
+
+```typescript
+import { NotFoundError } from "http-error-kit";
+
+export async function GET() {
+    const user = await findUser();
+    if (!user) {
+        throw new NotFoundError("User not found");
+    }
+    return Response.json(user);
+}
+```
+
+### Hono / Cloudflare Workers
+
+```typescript
+import { Hono } from "hono";
+import { KitHttpError, BadRequestError } from "http-error-kit";
+
+const app = new Hono();
+
+app.get("/api", (c) => {
+    throw new BadRequestError("Invalid input parameter");
+});
+
+app.onError((err, c) => {
+    if (err instanceof KitHttpError) {
+        return c.json(err, (err.statusCode || 500) as any);
+    }
+    return c.json({ message: "Internal Server Error" }, 500);
+});
 ```
 
 ## Usage
@@ -1469,6 +1531,10 @@ console.log(new KitHttpError(400, "Bad Request", {}).setFormatter(formatter));
  */
 ```
 
+## Related Projects
+
+-   [http-response-status-code](https://www.npmjs.com/package/http-response-status-code) - Lightweight utility for HTTP status codes, names, reason phrases, category validators, and Web Standard Fetch API response helpers.
+
 ## People
 
 The original author of the project is [Himanshu Bansal][skillnter]
@@ -1485,9 +1551,11 @@ The original author of the project is [Himanshu Bansal][skillnter]
 
 You can also use the following:
 
-![BTC: qzqmpxux3m56qqhz465u8022q9z63w2sysq4u9ltwj](https://img.shields.io/badge/BTC-qzqmpxux3m56qqhz465u8022q9z63w2sysq4u9ltwj-brightgreen)
+![BTC: bc1p22h4nsad5d8ketyhuvf0vyva6unttxwzzqvkty5r839as0mlclgs72d3mf](https://img.shields.io/badge/BTC-bc1p22h4nsad5d8ketyhuvf0vyva6unttxwzzqvkty5r839as0mlclgs72d3mf-brightgreen)
 
 ![ETH: 0x1D59a291391a3CE17C63D5dC50F258Dc0Ab62889](https://img.shields.io/badge/ETH-0x1D59a291391a3CE17C63D5dC50F258Dc0Ab62889-brightgreen)
+
+![BNB: 0x1D59a291391a3CE17C63D5dC50F258Dc0Ab62889](https://img.shields.io/badge/BNB-0x1D59a291391a3CE17C63D5dC50F258Dc0Ab62889-brightgreen)
 
 ## License
 
