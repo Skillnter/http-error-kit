@@ -43,6 +43,7 @@
     -   [Types of Formatter](#types-of-formatter)
         -   [1. Global Formatter](#1-global-formatter)
         -   [2. Instance-Level Formatter Override](#2-instance-level-formatter-override)
+        -   [3. Built-In RFC 7807 / RFC 9457 Problem Details](#3-built-in-rfc-7807--rfc-9457-problem-details)
 -   [Error Kit Overview](#error-kit-overview)
     -   [Common Error Classes](#common-error-classes)
         -   [1. Bad Request Error](#1-bad-request-error)
@@ -354,6 +355,45 @@ console.log(
 ```
 
 This will override the global formatter **only for this instance**
+
+### 3. Built-In RFC 7807 / RFC 9457 Problem Details
+
+`http-error-kit` provides out-of-the-box support for the official [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807) and [RFC 9457](https://datatracker.ietf.org/doc/html/rfc9457) ("Problem Details for HTTP APIs") standard.
+
+#### One-Line Global Activation
+
+```typescript
+import { KitHttpErrorConfig } from "http-error-kit";
+
+// Activates RFC 7807 / RFC 9457 Problem Details globally for all errors
+KitHttpErrorConfig.useProblemDetails();
+```
+
+#### Manual Formatter Configuration
+
+You can also pass `problemDetailsFormatter` (or its alias `rfcProblemDetailsFormatter`) explicitly:
+
+```typescript
+import { KitHttpErrorConfig, problemDetailsFormatter } from "http-error-kit";
+
+KitHttpErrorConfig.configureFormatter(problemDetailsFormatter);
+```
+
+#### Output Structure
+
+```json
+{
+    "type": "https://httpstatuses.com/404",
+    "title": "User Not Found",
+    "status": 404,
+    "detail": "User with ID 42 does not exist",
+    "instance": "/api/v1/users/42"
+}
+```
+
+- When `details` is a `string`, it is mapped to `detail`.
+- When `details` is an `object` or `array`, it is mapped to `invalidParams`.
+- When an extra string argument is passed, it is mapped to `instance`.
 
 ## Error Kit Overview
 

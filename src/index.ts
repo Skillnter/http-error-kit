@@ -1,4 +1,11 @@
-import { KitHttpError, KitHttpErrorConfig } from "./http.error";
+import {
+    KitHttpError,
+    KitHttpErrorConfig,
+    problemDetailsFormatter,
+    rfcProblemDetailsFormatter,
+    IRfcProblemDetails,
+    IProblemDetails,
+} from "./http.error";
 import { KitGeneralError } from "./general.error";
 import {
     CODES as STATUS_CODES,
@@ -1475,4 +1482,12 @@ export class NetworkAuthenticationRequiredError extends Error {
     }
 }
 
-export { KitGeneralError, KitHttpError, KitHttpErrorConfig };
+export {
+    KitGeneralError,
+    KitHttpError,
+    KitHttpErrorConfig,
+    problemDetailsFormatter,
+    rfcProblemDetailsFormatter,
+    IRfcProblemDetails,
+    IProblemDetails,
+};
