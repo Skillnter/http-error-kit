@@ -1,4 +1,9 @@
-import { KitHttpError, KitHttpErrorConfig } from "../src";
+import {
+    KitHttpError,
+    KitHttpErrorConfig,
+    problemDetailsFormatter,
+    rfcProblemDetailsFormatter,
+} from "../src";
 import {
     BadRequestError,
     UnauthorizedError,
@@ -1297,5 +1302,111 @@ describe("*** Testing KitHttpError with global formatter ***", function () {
         expect(json.det).toStrictEqual({});
         expect(json.arg1).toBe("argument1");
         expect(json.arg2).toBe("argument2");
+    });
+});
+
+describe("*** Testing rfcProblemDetailsFormatter and useRfcProblemDetails ***", function () {
+    afterEach(function () {
+        KitHttpErrorConfig.resetFormatter();
+    });
+
+    it("Should format basic error without details or instance", function () {
+        const result = rfcProblemDetailsFormatter(
+            404,
+            "Resource Not Found",
+            undefined
+        ) as any;
+        expect(result.type).toBe("https://httpstatuses.com/404");
+        expect(result.title).toBe("Resource Not Found");
+        expect(result.status).toBe(404);
+        expect(result.detail).toBeUndefined();
+        expect(result.invalidParams).toBeUndefined();
+        expect(result.instance).toBeUndefined();
+    });
+
+    it("Should format string details as detail property", function () {
+        const result = rfcProblemDetailsFormatter(
+            404,
+            "Not Found",
+            "User with ID 10 does not exist."
+        ) as any;
+        expect(result.status).toBe(404);
+        expect(result.detail).toBe("User with ID 10 does not exist.");
+        expect(result.invalidParams).toBeUndefined();
+    });
+
+    it("Should format object or array details as invalidParams property", function () {
+        const issues = [{ field: "username", message: "Required" }];
+        const result = rfcProblemDetailsFormatter(
+            400,
+            "Validation Failed",
+            issues
+        ) as any;
+        expect(result.status).toBe(400);
+        expect(result.detail).toBeUndefined();
+        expect(result.invalidParams).toEqual(issues);
+    });
+
+    it("Should format first arg as instance when it is a string", function () {
+        const result = rfcProblemDetailsFormatter(
+            403,
+            "Forbidden",
+            "Access denied",
+            "/api/v1/admin"
+        ) as any;
+        expect(result.status).toBe(403);
+        expect(result.detail).toBe("Access denied");
+        expect(result.instance).toBe("/api/v1/admin");
+    });
+
+    it("Should leave instance undefined when first arg is not a string", function () {
+        const result = rfcProblemDetailsFormatter(
+            500,
+            "Internal Server Error",
+            undefined,
+            12345
+        ) as any;
+        expect(result.status).toBe(500);
+        expect(result.instance).toBeUndefined();
+    });
+
+    it("Should activate RFC Problem Details globally with useRfcProblemDetails", function () {
+        KitHttpErrorConfig.useRfcProblemDetails();
+        expect(KitHttpErrorConfig.shouldUseKitHttpErrors()).toBe(true);
+
+        const error = new KitHttpError(
+            404,
+            "Not Found",
+            "Target item not found",
+            "/items/42"
+        );
+        const json = JSON.parse(JSON.stringify(error));
+        expect(json.type).toBe("https://httpstatuses.com/404");
+        expect(json.title).toBe("Not Found");
+        expect(json.status).toBe(404);
+        expect(json.detail).toBe("Target item not found");
+        expect(json.instance).toBe("/items/42");
+    });
+
+    it("Should verify problemDetailsFormatter is an alias for rfcProblemDetailsFormatter", function () {
+        expect(problemDetailsFormatter).toBe(rfcProblemDetailsFormatter);
+    });
+
+    it("Should activate RFC Problem Details globally with useProblemDetails alias", function () {
+        KitHttpErrorConfig.useProblemDetails();
+        expect(KitHttpErrorConfig.shouldUseKitHttpErrors()).toBe(true);
+
+        const error = new KitHttpError(
+            400,
+            "Bad Request",
+            "Missing required payload",
+            "/api/v1/register"
+        );
+        const json = JSON.parse(JSON.stringify(error));
+        expect(json.type).toBe("https://httpstatuses.com/400");
+        expect(json.title).toBe("Bad Request");
+        expect(json.status).toBe(400);
+        expect(json.detail).toBe("Missing required payload");
+        expect(json.instance).toBe("/api/v1/register");
     });
 });

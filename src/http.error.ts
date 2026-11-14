@@ -4,6 +4,12 @@ import {
 } from "http-response-status-code";
 import { IFormatter } from "./types/formatter.type";
 import { IRawInput } from "./interfaces/input.interface";
+import {
+    IRfcProblemDetails,
+    IProblemDetails,
+} from "./interfaces/rfc.interface";
+
+export { IRfcProblemDetails, IProblemDetails };
 
 /**
  * A flag indicating whether KitHttpError-based errors should be used globally.
@@ -17,6 +23,12 @@ let useKitHttpErrors = false;
  * @constant {number}
  */
 const EMPTY_ARRAY_LENGTH = 0;
+
+/**
+ * A default base URI for HTTP status codes in RFC Problem Details.
+ * @constant {string}
+ */
+const DEFAULT_RFC_TYPE_URI = "https://httpstatuses.com/";
 
 /**
  * Represents a customizable error with a status code, message, and optional details.
@@ -173,6 +185,55 @@ export class KitHttpError extends Error {
 }
 
 /**
+ * Built-in formatter adhering to the RFC 7807 / RFC 9457 Problem Details standard for HTTP APIs.
+ * Converts status code, message, details, and optional instance arguments into a standardized Problem Details object.
+ *
+ * @param {number} statusCode - The HTTP status code.
+ * @param {string} message - A human-readable summary of the problem type.
+ * @param {unknown} [details] - Detailed explanation (when string) or structured validation errors / invalid params (when object or array).
+ * @param {...unknown} args - Additional arguments. If the first argument is a string, it is used as the instance URI.
+ * @returns {IRfcProblemDetails} A structured RFC Problem Details object.
+ *
+ * @example
+ * ```typescript
+ * import { KitHttpErrorConfig, problemDetailsFormatter } from "http-error-kit";
+ *
+ * KitHttpErrorConfig.configureFormatter(problemDetailsFormatter);
+ * ```
+ */
+export const problemDetailsFormatter: IFormatter = (
+    statusCode: number,
+    message: string,
+    details?: unknown,
+    ...args: unknown[]
+): IRfcProblemDetails => {
+    const [firstArg] = args;
+
+    const problem: IRfcProblemDetails = {
+        type: `${DEFAULT_RFC_TYPE_URI}${statusCode}`,
+        title: message,
+        status: statusCode,
+    };
+
+    if (typeof details === "string") {
+        problem.detail = details;
+    } else if (typeof details === "object" && details !== null) {
+        problem.invalidParams = details;
+    }
+
+    if (typeof firstArg === "string") {
+        problem.instance = firstArg;
+    }
+
+    return problem;
+};
+
+/**
+ * Alias for problemDetailsFormatter.
+ */
+export const rfcProblemDetailsFormatter = problemDetailsFormatter;
+
+/**
  * Configuration class for KitHttpError.
  * Provides methods to configure the formatter function used by KitHttpError instances.
  */
@@ -187,6 +248,30 @@ export class KitHttpErrorConfig {
     static configureFormatter(formatter: IFormatter): void {
         KitHttpError._configureFormatter(formatter);
         useKitHttpErrors = true; // Switch to using KitHttpError-based errors globally
+    }
+
+    /**
+     * Activates RFC 7807 / RFC 9457 Problem Details formatting globally for all KitHttpError instances.
+     * When called, all KitHttpError instances will be formatted as Problem Details objects.
+     *
+     * @returns {void} Does not return a value.
+     *
+     * @example
+     * ```typescript
+     * import { KitHttpErrorConfig } from "http-error-kit";
+     *
+     * KitHttpErrorConfig.useProblemDetails();
+     * ```
+     */
+    static useProblemDetails(): void {
+        KitHttpErrorConfig.configureFormatter(problemDetailsFormatter);
+    }
+
+    /**
+     * Alias for useProblemDetails.
+     */
+    static useRfcProblemDetails(): void {
+        KitHttpErrorConfig.useProblemDetails();
     }
 
     /**
