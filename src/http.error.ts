@@ -204,11 +204,7 @@ export class KitHttpError extends Error {
      * ```
      */
     setHeader(name: string, value: string): this {
-        if (!this.headers) {
-            this.headers = {};
-        }
-        this.headers[name] = value;
-        return this;
+        return this.setHeaders({ [name]: value });
     }
 
     /**
