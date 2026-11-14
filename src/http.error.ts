@@ -8,8 +8,9 @@ import {
     IRfcProblemDetails,
     IProblemDetails,
 } from "./interfaces/rfc.interface";
+import { KitGeneralError, isKitGeneralError } from "./general.error";
 
-export { IRfcProblemDetails, IProblemDetails };
+export { IRfcProblemDetails, IProblemDetails, isKitGeneralError };
 
 /**
  * A flag indicating whether KitHttpError-based errors should be used globally.
@@ -58,6 +59,12 @@ export class KitHttpError extends Error {
      * @type {*}
      */
     details?: unknown;
+
+    /**
+     * HTTP response headers associated with this error (e.g. WWW-Authenticate, Retry-After).
+     * @type {Record<string, string> | undefined}
+     */
+    headers?: Record<string, string>;
 
     /**
      * A default formatter function used to format error details when no instance-specific formatter is provided.
@@ -182,7 +189,157 @@ export class KitHttpError extends Error {
             details: this.rawInputs.details,
         };
     }
+
+    /**
+     * Sets a response header for this error instance.
+     *
+     * @param {string} name - The header field name.
+     * @param {string} value - The header field value.
+     * @returns {this} The current instance for method chaining.
+     *
+     * @example
+     * ```typescript
+     * throw new UnauthorizedError("Session expired")
+     *     .setHeader("WWW-Authenticate", 'Bearer error="token_expired"');
+     * ```
+     */
+    setHeader(name: string, value: string): this {
+        return this.setHeaders({ [name]: value });
+    }
+
+    /**
+     * Sets multiple response headers for this error instance.
+     *
+     * @param {Record<string, string>} headers - An object containing key-value pairs of headers.
+     * @returns {this} The current instance for method chaining.
+     *
+     * @example
+     * ```typescript
+     * throw new TooManyRequestsError("Rate limit exceeded")
+     *     .setHeaders({ "Retry-After": "60", "X-RateLimit-Limit": "100" });
+     * ```
+     */
+    setHeaders(headers: Record<string, string>): this {
+        if (!this.headers) {
+            this.headers = {};
+        }
+        Object.assign(this.headers, headers);
+        return this;
+    }
+
+    /**
+     * Converts this error instance into a WHATWG standard Fetch Response object.
+     * Compatible with Next.js App Router, Cloudflare Workers, Hono, Bun, and modern Node.js runtimes.
+     *
+     * @param {ResponseInit} [init] - Optional ResponseInit configuration to override or supplement the response.
+     * @returns {Response} A Fetch API Response instance containing the serialized error body and HTTP status.
+     *
+     * @example
+     * ```typescript
+     * export async function GET() {
+     *     const err = new NotFoundError("Resource not found");
+     *     return err.toResponse();
+     * }
+     * ```
+     */
+    toResponse(init?: ResponseInit): Response {
+        if (typeof Response === "undefined") {
+            throw new ReferenceError(
+                "Response is not defined in this environment. Ensure global fetch/Response is available (Node.js 18+ or a polyfill)."
+            );
+        }
+
+        const bodyData = this.toJSON();
+        const body = JSON.stringify(bodyData);
+        const status = this.statusCode ?? this.rawInputs.statusCode;
+
+        const isProblemDetails =
+            typeof bodyData === "object" &&
+            bodyData !== null &&
+            "type" in bodyData &&
+            "title" in bodyData &&
+            "status" in bodyData;
+
+        const headers = new Headers();
+        headers.set(
+            "Content-Type",
+            isProblemDetails
+                ? "application/problem+json"
+                : "application/json"
+        );
+
+        if (this.headers) {
+            const instanceHeaders = new Headers(this.headers);
+            instanceHeaders.forEach((val, key) => {
+                headers.set(key, val);
+            });
+        }
+
+        if (init?.headers) {
+            const initHeaders = new Headers(init.headers);
+            initHeaders.forEach((val, key) => {
+                headers.set(key, val);
+            });
+        }
+
+        return new Response(body, {
+            ...init,
+            status,
+            headers,
+        });
+    }
 }
+
+/**
+ * Type guard that checks if an unknown value is an instance of KitHttpError.
+ * Uses both instanceof and structural check for resilience across different module realms.
+ *
+ * @param {unknown} error - The value to check.
+ * @returns {boolean} True if the error is a KitHttpError, false otherwise.
+ *
+ * @example
+ * ```typescript
+ * import { isKitHttpError } from "http-error-kit";
+ *
+ * if (isKitHttpError(err)) {
+ *     console.log(err.statusCode, err.toJSON());
+ * }
+ * ```
+ */
+export const isKitHttpError = (
+    error: unknown
+): error is KitHttpError => {
+    return (
+        error instanceof KitHttpError ||
+        (typeof error === "object" &&
+            error !== null &&
+            error instanceof Error &&
+            typeof (error as KitHttpError).getInputs === "function" &&
+            typeof (error as KitHttpError).toJSON === "function" &&
+            typeof (error as KitHttpError).setFormatter === "function")
+    );
+};
+
+/**
+ * Type guard that checks if an unknown value is either a KitHttpError or a KitGeneralError.
+ *
+ * @param {unknown} error - The value to check.
+ * @returns {boolean} True if the error is a KitHttpError or KitGeneralError, false otherwise.
+ *
+ * @example
+ * ```typescript
+ * import { isKitError } from "http-error-kit";
+ *
+ * if (isKitError(err)) {
+ *     res.status(err.statusCode).json(err.toJSON());
+ * }
+ * ```
+ */
+export const isKitError = (
+    error: unknown
+): error is KitHttpError | KitGeneralError => {
+    return isKitHttpError(error) || isKitGeneralError(error);
+};
 
 /**
  * Built-in formatter adhering to the RFC 7807 / RFC 9457 Problem Details standard for HTTP APIs.

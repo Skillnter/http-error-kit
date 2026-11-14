@@ -42,6 +42,7 @@ import {
     LoopDetectedError,
     NotExtendedError,
     NetworkAuthenticationRequiredError,
+    isKitGeneralError,
 } from "../src/general.error";
 const STATUS_CODES = require("http-response-status-code");
 
@@ -749,5 +750,108 @@ describe("*** Testing NetworkAuthenticationRequiredError ***", function () {
             STATUS_CODES.getStatusDescription(STATUS_CODES.CODES.HTTP_CODE_511)
         );
         expect(test.statusCode).toBe(STATUS_CODES.CODES.HTTP_CODE_511);
+    });
+});
+
+describe("*** Testing KitGeneralError Headers and toResponse ***", function () {
+    it("Should set single header using setHeader with method chaining", function () {
+        const error = new KitGeneralError(401, "Unauthorized");
+        const chained = error.setHeader("WWW-Authenticate", 'Bearer error="invalid_token"');
+        expect(chained).toBe(error);
+        expect(error.headers).toEqual({
+            "WWW-Authenticate": 'Bearer error="invalid_token"',
+        });
+        error.setHeader("X-Custom", "123");
+        expect(error.headers).toEqual({
+            "WWW-Authenticate": 'Bearer error="invalid_token"',
+            "X-Custom": "123",
+        });
+    });
+
+    it("Should set multiple headers using setHeaders", function () {
+        const error = new KitGeneralError(429, "Too Many Requests");
+        error.setHeaders({
+            "Retry-After": "60",
+            "X-RateLimit-Limit": "100",
+        });
+        expect(error.headers).toEqual({
+            "Retry-After": "60",
+            "X-RateLimit-Limit": "100",
+        });
+        error.setHeaders({ "X-RateLimit-Remaining": "0" });
+        expect(error.headers).toEqual({
+            "Retry-After": "60",
+            "X-RateLimit-Limit": "100",
+            "X-RateLimit-Remaining": "0",
+        });
+    });
+
+    it("Should convert error to WHATWG Response with toResponse", async function () {
+        const error = new KitGeneralError(404, "Item Not Found", { id: 10 });
+        error.setHeader("X-Custom-Header", "true");
+        const response = error.toResponse();
+        expect(response).toBeInstanceOf(Response);
+        expect(response.status).toBe(404);
+        expect(response.headers.get("content-type")).toBe("application/json");
+        expect(response.headers.get("x-custom-header")).toBe("true");
+
+        const body = await response.json();
+        expect(body).toEqual({
+            statusCode: 404,
+            message: "Item Not Found",
+            details: { id: 10 },
+        });
+    });
+
+    it("Should merge init.headers when provided as object, Headers, or array", function () {
+        const error = new KitGeneralError(400, "Bad Request");
+
+        const resObj = error.toResponse({
+            headers: { "X-Object-Header": "yes" },
+        });
+        expect(resObj.headers.get("x-object-header")).toBe("yes");
+
+        const headersInst = new Headers({ "X-Headers-Inst": "yes" });
+        const resInst = error.toResponse({ headers: headersInst });
+        expect(resInst.headers.get("x-headers-inst")).toBe("yes");
+
+        const resArr = error.toResponse({
+            headers: [["X-Array-Header", "yes"]],
+        });
+        expect(resArr.headers.get("x-array-header")).toBe("yes");
+    });
+
+    it("Should throw ReferenceError when global Response is undefined", function () {
+        const error = new KitGeneralError(500, "Server Error");
+        const originalResponse = global.Response;
+        try {
+            // @ts-ignore
+            delete global.Response;
+            expect(() => error.toResponse()).toThrow(ReferenceError);
+        } finally {
+            global.Response = originalResponse;
+        }
+    });
+
+    it("Should test isKitGeneralError type guard", function () {
+        const genErr = new KitGeneralError(400, "Bad Request");
+        expect(isKitGeneralError(genErr)).toBe(true);
+
+        const duckGeneral = {
+            name: "Error",
+            message: "duck",
+            statusCode: 404,
+            getInputs: () => ({ statusCode: 404, message: "duck", details: undefined, args: [] }),
+            toJSON: () => ({ statusCode: 404, message: "duck", details: undefined }),
+        };
+        Object.setPrototypeOf(duckGeneral, Error.prototype);
+        expect(isKitGeneralError(duckGeneral)).toBe(true);
+
+        expect(isKitGeneralError(new Error("standard error"))).toBe(false);
+        expect(isKitGeneralError(null)).toBe(false);
+        expect(isKitGeneralError(undefined)).toBe(false);
+        expect(isKitGeneralError("string")).toBe(false);
+        expect(isKitGeneralError(123)).toBe(false);
+        expect(isKitGeneralError({})).toBe(false);
     });
 });

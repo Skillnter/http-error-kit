@@ -13,7 +13,7 @@
 ![npms.io (final)](https://img.shields.io/npms-io/maintenance-score/http-error-kit?color=brightgreen)
 ![npm](https://img.shields.io/npm/dy/http-error-kit)
 ![NPM Type Definitions](https://img.shields.io/npm/types/http-error-kit)
-[![Socket Badge](https://socket.dev/api/badge/npm/package/http-error-kit/1.2.0)](https://socket.dev/npm/package/http-error-kit/overview/1.2.0)
+[![Socket Badge](https://socket.dev/api/badge/npm/package/http-error-kit/1.4.0)](https://socket.dev/npm/package/http-error-kit/overview/1.4.0)
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-121013?logo=github&logoColor=white)](https://skillnter.github.io/http-error-kit/)
 [![Github Sponsors](https://img.shields.io/badge/GitHub%20Sponsors-30363D?&logo=GitHub-Sponsors&logoColor=EA4AAA)](https://github.com/sponsors/Skillnter)
 [![Open Collective](https://img.shields.io/badge/Open%20Collective-3385FF?logo=open-collective&logoColor=white)](https://opencollective.com/http-error-kit)
@@ -45,6 +45,10 @@
         -   [1. Global Formatter](#1-global-formatter)
         -   [2. Instance-Level Formatter Override](#2-instance-level-formatter-override)
         -   [3. Built-In RFC 7807 / RFC 9457 Problem Details](#3-built-in-rfc-7807--rfc-9457-problem-details)
+-   [Modern Web & Runtime Capabilities](#modern-web--runtime-capabilities)
+    -   [1. Type Guards (isKitError, isKitHttpError, isKitGeneralError)](#1-type-guards-iskiterror-iskithttperror-iskitgeneralerror)
+    -   [2. Web Standard toResponse() (Next.js, Hono, Cloudflare Workers)](#2-web-standard-toresponse-nextjs-hono-cloudflare-workers)
+    -   [3. HTTP Headers Management](#3-http-headers-management)
 -   [Error Kit Overview](#error-kit-overview)
     -   [Common Error Classes](#common-error-classes)
         -   [1. Bad Request Error](#1-bad-request-error)
@@ -395,6 +399,79 @@ KitHttpErrorConfig.configureFormatter(problemDetailsFormatter);
 - When `details` is a `string`, it is mapped to `detail`.
 - When `details` is an `object` or `array`, it is mapped to `invalidParams`.
 - When an extra string argument is passed, it is mapped to `instance`.
+
+## Modern Web & Runtime Capabilities
+
+### 1. Type Guards (`isKitError`, `isKitHttpError`, `isKitGeneralError`)
+
+TypeScript type guards safely narrow unknown caught errors across module boundaries, monorepo packages, and realms where standard `instanceof` can be brittle:
+
+```typescript
+import { isKitError, isKitHttpError, isKitGeneralError } from "http-error-kit";
+
+try {
+    // Application logic
+} catch (error: unknown) {
+    if (isKitError(error)) {
+        // Narrowed to KitHttpError | KitGeneralError
+        console.log(error.statusCode); // e.g. 404
+        console.log(error.toJSON());
+    }
+}
+```
+
+- **`isKitError(err)`**: Returns `true` for any `KitHttpError`, `KitGeneralError`, or named error class (`NotFoundError`, `BadRequestError`, etc.).
+- **`isKitHttpError(err)`**: Returns `true` specifically for errors with configurable formatter support (`KitHttpError`).
+- **`isKitGeneralError(err)`**: Returns `true` for lightweight, non-formatter errors (`KitGeneralError`).
+
+### 2. Web Standard `toResponse()` (Next.js, Hono, Cloudflare Workers)
+
+Directly convert any error into a standard [WHATWG Fetch API `Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) object. Perfectly suited for Next.js App Router route handlers, Cloudflare Workers, Hono, Remix, Bun, and modern Node.js:
+
+```typescript
+import { NotFoundError } from "http-error-kit";
+
+// Next.js App Router (app/api/users/[id]/route.ts)
+export async function GET(request: Request, { params }: { params: { id: string } }) {
+    const user = await findUser(params.id);
+    if (!user) {
+        const error = new NotFoundError("User does not exist", { id: params.id });
+        return error.toResponse();
+        // Returns Response with status 404 and Content-Type: application/json
+    }
+    return Response.json(user);
+}
+```
+
+- **Automatic Content-Type**: Sets `"application/problem+json"` when RFC Problem Details are active, or `"application/json"` otherwise.
+- **Custom Options**: Accepts standard `ResponseInit` to supplement or override headers or status text:
+  ```typescript
+  return error.toResponse({
+      headers: { "X-Custom-Trace": "req-123" }
+  });
+  ```
+
+### 3. HTTP Headers Management
+
+Attach RFC-standard response headers (such as `WWW-Authenticate`, `Retry-After`, `Allow`) directly to your error instances using chainable helpers:
+
+```typescript
+import { UnauthorizedError, TooManyRequestsError } from "http-error-kit";
+
+// 401 Unauthorized with WWW-Authenticate header
+throw new UnauthorizedError("Session expired")
+    .setHeader("WWW-Authenticate", 'Bearer error="token_expired"');
+
+// 429 Too Many Requests with multiple rate-limiting headers
+throw new TooManyRequestsError("Rate limit exceeded")
+    .setHeaders({
+        "Retry-After": "60",
+        "X-RateLimit-Limit": "100",
+        "X-RateLimit-Remaining": "0"
+    });
+```
+
+Headers set on the error are automatically forwarded when calling `toResponse()` and are integrated by `@wthek/*` middlewares.
 
 ## Error Kit Overview
 
