@@ -207,10 +207,7 @@ export const problemDetailsFormatter: IFormatter = (
     details?: unknown,
     ...args: unknown[]
 ): IRfcProblemDetails => {
-    const firstArg =
-        Array.isArray(args) && args.length > EMPTY_ARRAY_LENGTH
-            ? args[EMPTY_ARRAY_LENGTH]
-            : undefined;
+    const [firstArg] = args;
 
     const problem: IRfcProblemDetails = {
         type: `${DEFAULT_RFC_TYPE_URI}${statusCode}`,
