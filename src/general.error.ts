@@ -28,6 +28,12 @@ export class KitGeneralError extends Error {
     details: unknown;
 
     /**
+     * HTTP response headers associated with this error (e.g. WWW-Authenticate, Retry-After).
+     * @type {Record<string, string> | undefined}
+     */
+    headers?: Record<string, string>;
+
+    /**
      * The raw input data associated with this instance.
      * @private
      * @type {IRawInput}
@@ -69,7 +75,123 @@ export class KitGeneralError extends Error {
             details: this.details,
         };
     }
+
+    /**
+     * Sets a response header for this error instance.
+     *
+     * @param {string} name - The header field name.
+     * @param {string} value - The header field value.
+     * @returns {this} The current instance for method chaining.
+     *
+     * @example
+     * ```typescript
+     * throw new UnauthorizedError("Session expired")
+     *     .setHeader("WWW-Authenticate", 'Bearer error="token_expired"');
+     * ```
+     */
+    setHeader(name: string, value: string): this {
+        if (!this.headers) {
+            this.headers = {};
+        }
+        this.headers[name] = value;
+        return this;
+    }
+
+    /**
+     * Sets multiple response headers for this error instance.
+     *
+     * @param {Record<string, string>} headers - An object containing key-value pairs of headers.
+     * @returns {this} The current instance for method chaining.
+     */
+    setHeaders(headers: Record<string, string>): this {
+        if (!this.headers) {
+            this.headers = {};
+        }
+        Object.assign(this.headers, headers);
+        return this;
+    }
+
+    /**
+     * Converts this error instance into a WHATWG standard Fetch Response object.
+     * Compatible with Next.js App Router, Cloudflare Workers, Hono, Bun, and modern Node.js runtimes.
+     *
+     * @param {ResponseInit} [init] - Optional ResponseInit configuration to override or supplement the response.
+     * @returns {Response} A Fetch API Response instance containing the serialized error body and HTTP status.
+     *
+     * @example
+     * ```typescript
+     * export async function GET() {
+     *     const err = new NotFoundError("Resource not found");
+     *     return err.toResponse();
+     * }
+     * ```
+     */
+    toResponse(init?: ResponseInit): Response {
+        if (typeof Response === "undefined") {
+            throw new ReferenceError(
+                "Response is not defined in this environment. Ensure global fetch/Response is available (Node.js 18+ or a polyfill)."
+            );
+        }
+
+        const bodyData = this.toJSON();
+        const body = JSON.stringify(bodyData);
+        const status = this.statusCode;
+
+        const headers = new Headers();
+        headers.set("Content-Type", "application/json");
+
+        if (this.headers) {
+            const instanceHeaders = new Headers(this.headers);
+            instanceHeaders.forEach((val, key) => {
+                headers.set(key, val);
+            });
+        }
+
+        if (init?.headers) {
+            const initHeaders = new Headers(init.headers);
+            initHeaders.forEach((val, key) => {
+                headers.set(key, val);
+            });
+        }
+
+        return new Response(body, {
+            ...init,
+            status,
+            headers,
+        });
+    }
 }
+
+/**
+ * Type guard that checks if an unknown value is an instance of KitGeneralError.
+ * Uses both instanceof and structural check for resilience across different module realms.
+ *
+ * @param {unknown} error - The value to check.
+ * @returns {boolean} True if the error is a KitGeneralError, false otherwise.
+ *
+ * @example
+ * ```typescript
+ * import { isKitGeneralError } from "http-error-kit/generic";
+ *
+ * if (isKitGeneralError(err)) {
+ *     console.log(err.statusCode, err.toJSON());
+ * }
+ * ```
+ */
+export const isKitGeneralError = (
+    error: unknown
+): error is KitGeneralError => {
+    return (
+        error instanceof KitGeneralError ||
+        (typeof error === "object" &&
+            error !== null &&
+            error instanceof Error &&
+            typeof (error as KitGeneralError).getInputs === "function" &&
+            typeof (error as KitGeneralError).toJSON === "function" &&
+            !("setFormatter" in error) &&
+            typeof (error as KitGeneralError).statusCode === "number")
+    );
+};
 
 /**
  * Creates a new instance of the KitGeneralError class with a status code of 400, Bad Request.

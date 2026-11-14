@@ -5,8 +5,11 @@ import {
     rfcProblemDetailsFormatter,
     IRfcProblemDetails,
     IProblemDetails,
+    isKitHttpError,
+    isKitError,
 } from "./http.error";
-import { KitGeneralError } from "./general.error";
+import { KitGeneralError, isKitGeneralError } from "./general.error";
+import { IKitError } from "./interfaces/kit-error.interface";
 import {
     CODES as STATUS_CODES,
     getStatusDescription,
@@ -1490,4 +1493,8 @@ export {
     rfcProblemDetailsFormatter,
     IRfcProblemDetails,
     IProblemDetails,
+    isKitHttpError,
+    isKitGeneralError,
+    isKitError,
+    IKitError,
 };

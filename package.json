@@ -1,6 +1,6 @@
 {
     "name": "http-error-kit",
-    "version": "1.3.0",
+    "version": "1.4.0",
     "description": "TypeScript-first HTTP error classes (NotFoundError, BadRequestError, etc.) with customizable formatters and structured JSON responses for Express, Fastify, Hono, and Next.js.",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",

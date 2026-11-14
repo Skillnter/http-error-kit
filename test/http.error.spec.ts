@@ -3,7 +3,12 @@ import {
     KitHttpErrorConfig,
     problemDetailsFormatter,
     rfcProblemDetailsFormatter,
+    isKitHttpError,
+    isKitGeneralError,
+    isKitError,
 } from "../src";
+import { KitGeneralError } from "../src/general.error";
+import { isKitGeneralError as isKitGeneralErrorFromHttp } from "../src/http.error";
 import {
     BadRequestError,
     UnauthorizedError,
@@ -1408,5 +1413,157 @@ describe("*** Testing rfcProblemDetailsFormatter and useRfcProblemDetails ***", 
         expect(json.status).toBe(400);
         expect(json.detail).toBe("Missing required payload");
         expect(json.instance).toBe("/api/v1/register");
+    });
+});
+
+describe("*** Testing KitHttpError Headers and toResponse ***", function () {
+    afterEach(() => {
+        KitHttpErrorConfig.resetFormatter();
+    });
+
+    it("Should set single header using setHeader with method chaining", function () {
+        const error = new KitHttpError(401, "Unauthorized");
+        const chained = error.setHeader("WWW-Authenticate", 'Bearer error="invalid_token"');
+        expect(chained).toBe(error);
+        expect(error.headers).toEqual({
+            "WWW-Authenticate": 'Bearer error="invalid_token"',
+        });
+        error.setHeader("X-Custom", "test");
+        expect(error.headers).toEqual({
+            "WWW-Authenticate": 'Bearer error="invalid_token"',
+            "X-Custom": "test",
+        });
+    });
+
+    it("Should set multiple headers using setHeaders", function () {
+        const error = new KitHttpError(429, "Too Many Requests");
+        error.setHeaders({
+            "Retry-After": "60",
+            "X-RateLimit-Limit": "100",
+        });
+        expect(error.headers).toEqual({
+            "Retry-After": "60",
+            "X-RateLimit-Limit": "100",
+        });
+        error.setHeaders({ "X-RateLimit-Remaining": "0" });
+        expect(error.headers).toEqual({
+            "Retry-After": "60",
+            "X-RateLimit-Limit": "100",
+            "X-RateLimit-Remaining": "0",
+        });
+    });
+
+    it("Should convert error to WHATWG Response with standard JSON", async function () {
+        KitHttpErrorConfig.resetFormatter();
+        const error = new KitHttpError(404, "User Not Found", { id: 42 });
+        error.setHeader("X-Trace-Id", "trace-123");
+
+        const response = error.toResponse();
+        expect(response).toBeInstanceOf(Response);
+        expect(response.status).toBe(404);
+        expect(response.headers.get("content-type")).toBe("application/json");
+        expect(response.headers.get("x-trace-id")).toBe("trace-123");
+
+        const body = await response.json();
+        expect(body).toEqual({
+            statusCode: 404,
+            message: "User Not Found",
+            details: { id: 42 },
+        });
+    });
+
+    it("Should convert error to WHATWG Response with RFC Problem Details", async function () {
+        KitHttpErrorConfig.useProblemDetails();
+        const error = new KitHttpError(
+            400,
+            "Bad Request",
+            "Invalid email format",
+            "/api/v1/auth"
+        );
+        const response = error.toResponse();
+        expect(response.status).toBe(400);
+        expect(response.headers.get("content-type")).toBe(
+            "application/problem+json"
+        );
+
+        const body = await response.json();
+        expect(body.type).toBe("https://httpstatuses.com/400");
+        expect(body.title).toBe("Bad Request");
+        expect(body.status).toBe(400);
+        expect(body.detail).toBe("Invalid email format");
+        expect(body.instance).toBe("/api/v1/auth");
+    });
+
+    it("Should merge init.headers when provided as object, Headers, or array", function () {
+        const error = new KitHttpError(400, "Bad Request");
+
+        const resObj = error.toResponse({
+            headers: { "X-Object-Header": "yes" },
+        });
+        expect(resObj.headers.get("x-object-header")).toBe("yes");
+
+        const headersInst = new Headers({ "X-Headers-Inst": "yes" });
+        const resInst = error.toResponse({ headers: headersInst });
+        expect(resInst.headers.get("x-headers-inst")).toBe("yes");
+
+        const resArr = error.toResponse({
+            headers: [["X-Array-Header", "yes"]],
+        });
+        expect(resArr.headers.get("x-array-header")).toBe("yes");
+    });
+
+    it("Should fallback to rawInputs.statusCode if statusCode is deleted", function () {
+        const error = new KitHttpError(404, "Error");
+        // @ts-ignore
+        delete error.statusCode;
+        const res = error.toResponse();
+        expect(res.status).toBe(404);
+    });
+
+    it("Should throw ReferenceError when global Response is undefined", function () {
+        const error = new KitHttpError(500, "Server Error");
+        const originalResponse = global.Response;
+        try {
+            // @ts-ignore
+            delete global.Response;
+            expect(() => error.toResponse()).toThrow(ReferenceError);
+        } finally {
+            global.Response = originalResponse;
+        }
+    });
+
+    it("Should test isKitHttpError and isKitError type guards", function () {
+        const httpErr = new KitHttpError(400, "Bad Request");
+        const genErr = new KitGeneralError(400, "Bad Request");
+
+        expect(isKitHttpError(httpErr)).toBe(true);
+        expect(isKitHttpError(genErr)).toBe(false);
+        expect(isKitGeneralErrorFromHttp(genErr)).toBe(true);
+
+        const duckHttp = {
+            name: "Error",
+            message: "duck",
+            statusCode: 400,
+            getInputs: () => ({ statusCode: 400, message: "duck", details: undefined, args: [] }),
+            toJSON: () => ({ statusCode: 400, message: "duck" }),
+            setFormatter: () => duckHttp,
+        };
+        Object.setPrototypeOf(duckHttp, Error.prototype);
+        expect(isKitHttpError(duckHttp)).toBe(true);
+
+        expect(isKitHttpError(new Error("standard error"))).toBe(false);
+        expect(isKitHttpError(null)).toBe(false);
+        expect(isKitHttpError(undefined)).toBe(false);
+        expect(isKitHttpError("string")).toBe(false);
+        expect(isKitHttpError(123)).toBe(false);
+        expect(isKitHttpError({})).toBe(false);
+
+        // isKitError tests
+        expect(isKitError(httpErr)).toBe(true);
+        expect(isKitError(genErr)).toBe(true);
+        expect(isKitError(duckHttp)).toBe(true);
+        expect(isKitError(new Error("standard error"))).toBe(false);
+        expect(isKitError(null)).toBe(false);
+        expect(isKitError(undefined)).toBe(false);
     });
 });
