@@ -34,6 +34,11 @@ const DEFAULT_RFC_TYPE_URI = "https://httpstatuses.com/";
 /**
  * Represents a customizable error with a status code, message, and optional details.
  * @extends {Error}
+ *
+ * @example
+ * ```typescript
+ * throw new KitHttpError(404, "User not found", { userId: "123" });
+ * ```
  */
 export class KitHttpError extends Error {
     /**
@@ -393,6 +398,13 @@ export const rfcProblemDetailsFormatter = problemDetailsFormatter;
 /**
  * Configuration class for KitHttpError.
  * Provides methods to configure the formatter function used by KitHttpError instances.
+ *
+ * @example
+ * ```typescript
+ * import { KitHttpErrorConfig, problemDetailsFormatter } from "http-error-kit";
+ *
+ * KitHttpErrorConfig.configureFormatter(problemDetailsFormatter);
+ * ```
  */
 export class KitHttpErrorConfig {
     /**
@@ -401,6 +413,13 @@ export class KitHttpErrorConfig {
      * When this method is called, KitHttpError-based errors will be used globally.
      * @param {(statusCode: number, message: string, details?: unknown, ...args: unknown[]) => unknown} formatter - A function to format error details, which takes the status code, message, optional details, and additional arguments as parameters.
      * @returns {void} Does not return a value.
+     *
+     * @example
+     * ```typescript
+     * KitHttpErrorConfig.configureFormatter((status, msg, details) => ({
+     *     error: { status, message: msg, details }
+     * }));
+     * ```
      */
     static configureFormatter(formatter: IFormatter): void {
         KitHttpError._configureFormatter(formatter);
@@ -435,6 +454,13 @@ export class KitHttpErrorConfig {
      * Checks if KitHttpError-based errors are being used globally.
      *
      * @returns {boolean} True if KitHttpError-based errors are enabled globally, false otherwise.
+     *
+     * @example
+     * ```typescript
+     * if (KitHttpErrorConfig.shouldUseKitHttpErrors()) {
+     *     console.log("Global KitHttpError formatting is active");
+     * }
+     * ```
      */
     static shouldUseKitHttpErrors(): boolean {
         return useKitHttpErrors;
@@ -444,6 +470,11 @@ export class KitHttpErrorConfig {
      * Resets the global formatter function and disables KitHttpError-based errors globally.
      * 
      * @returns {void} Does not return a value.
+     *
+     * @example
+     * ```typescript
+     * KitHttpErrorConfig.resetFormatter();
+     * ```
      */
     static resetFormatter(): void {
         KitHttpError._configureFormatter(undefined);
@@ -454,6 +485,11 @@ export class KitHttpErrorConfig {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 400, Bad Request.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new BadRequestError("Operation failed", { code: "BadRequestError" });
+ * ```
  */
 export class BadRequestError extends KitHttpError {
     /**
@@ -481,6 +517,11 @@ export class BadRequestError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 401, Unauthorized.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new UnauthorizedError("Operation failed", { code: "UnauthorizedError" });
+ * ```
  */
 export class UnauthorizedError extends KitHttpError {
     /**
@@ -507,6 +548,11 @@ export class UnauthorizedError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 402, Payment Required.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new PaymentRequiredError("Operation failed", { code: "PaymentRequiredError" });
+ * ```
  */
 export class PaymentRequiredError extends KitHttpError {
     /**
@@ -533,6 +579,11 @@ export class PaymentRequiredError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 403, Forbidden.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new ForbiddenError("Operation failed", { code: "ForbiddenError" });
+ * ```
  */
 export class ForbiddenError extends KitHttpError {
     /**
@@ -559,6 +610,11 @@ export class ForbiddenError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 404, Not Found.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new NotFoundError("Operation failed", { code: "NotFoundError" });
+ * ```
  */
 export class NotFoundError extends KitHttpError {
     /**
@@ -585,6 +641,11 @@ export class NotFoundError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 405, Method Not Allowed.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new MethodNotAllowedError("Operation failed", { code: "MethodNotAllowedError" });
+ * ```
  */
 export class MethodNotAllowedError extends KitHttpError {
     /**
@@ -611,6 +672,11 @@ export class MethodNotAllowedError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 406, Not Acceptable.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new NotAcceptableError("Operation failed", { code: "NotAcceptableError" });
+ * ```
  */
 export class NotAcceptableError extends KitHttpError {
     /**
@@ -637,6 +703,11 @@ export class NotAcceptableError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 407, Proxy Authentication Required.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new ProxyAuthenticationRequiredError("Operation failed", { code: "ProxyAuthenticationRequiredError" });
+ * ```
  */
 export class ProxyAuthenticationRequiredError extends KitHttpError {
     /**
@@ -663,6 +734,11 @@ export class ProxyAuthenticationRequiredError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 408, Request Timeout.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new RequestTimeoutError("Operation failed", { code: "RequestTimeoutError" });
+ * ```
  */
 export class RequestTimeoutError extends KitHttpError {
     /**
@@ -689,6 +765,11 @@ export class RequestTimeoutError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 409, Conflict.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new ConflictError("Operation failed", { code: "ConflictError" });
+ * ```
  */
 export class ConflictError extends KitHttpError {
     /**
@@ -715,6 +796,11 @@ export class ConflictError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 410, Gone.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new GoneError("Operation failed", { code: "GoneError" });
+ * ```
  */
 export class GoneError extends KitHttpError {
     /**
@@ -741,6 +827,11 @@ export class GoneError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 411, Length Required.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new LengthRequiredError("Operation failed", { code: "LengthRequiredError" });
+ * ```
  */
 export class LengthRequiredError extends KitHttpError {
     /**
@@ -767,6 +858,11 @@ export class LengthRequiredError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 412, Precondition Failed.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new PreconditionFailedError("Operation failed", { code: "PreconditionFailedError" });
+ * ```
  */
 export class PreconditionFailedError extends KitHttpError {
     /**
@@ -793,6 +889,11 @@ export class PreconditionFailedError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 413, Request Entity Too Large.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new RequestTooLongError("Operation failed", { code: "RequestTooLongError" });
+ * ```
  */
 export class RequestTooLongError extends KitHttpError {
     /**
@@ -819,6 +920,11 @@ export class RequestTooLongError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 414, Request-URI Too Long.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new RequestUriTooLongError("Operation failed", { code: "RequestUriTooLongError" });
+ * ```
  */
 export class RequestUriTooLongError extends KitHttpError {
     /**
@@ -845,6 +951,11 @@ export class RequestUriTooLongError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 415, Unsupported Media Type.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new UnsupportedMediaTypeError("Operation failed", { code: "UnsupportedMediaTypeError" });
+ * ```
  */
 export class UnsupportedMediaTypeError extends KitHttpError {
     /**
@@ -871,6 +982,11 @@ export class UnsupportedMediaTypeError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 416, Requested Range Not Satisfiable.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new RequestedRangeNotSatisfiableError("Operation failed", { code: "RequestedRangeNotSatisfiableError" });
+ * ```
  */
 export class RequestedRangeNotSatisfiableError extends KitHttpError {
     /**
@@ -900,6 +1016,11 @@ export class RequestedRangeNotSatisfiableError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 417, Expectation Failed.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new ExpectationFailedError("Operation failed", { code: "ExpectationFailedError" });
+ * ```
  */
 export class ExpectationFailedError extends KitHttpError {
     /**
@@ -926,6 +1047,11 @@ export class ExpectationFailedError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 418, I'm a teapot.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new ImATeapotError("Operation failed", { code: "ImATeapotError" });
+ * ```
  */
 export class ImATeapotError extends KitHttpError {
     /**
@@ -952,6 +1078,11 @@ export class ImATeapotError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 419, Insufficient Space on Resource.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new InsufficientSpaceOnResourceError("Operation failed", { code: "InsufficientSpaceOnResourceError" });
+ * ```
  */
 export class InsufficientSpaceOnResourceError extends KitHttpError {
     /**
@@ -978,6 +1109,11 @@ export class InsufficientSpaceOnResourceError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 420, Method Failure.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new MethodFailureError("Operation failed", { code: "MethodFailureError" });
+ * ```
  */
 export class MethodFailureError extends KitHttpError {
     /**
@@ -1004,6 +1140,11 @@ export class MethodFailureError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 421, Misdirected Request.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new MisdirectedRequestError("Operation failed", { code: "MisdirectedRequestError" });
+ * ```
  */
 export class MisdirectedRequestError extends KitHttpError {
     /**
@@ -1030,6 +1171,11 @@ export class MisdirectedRequestError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 422, Unprocessable Entity.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new UnprocessableEntityError("Operation failed", { code: "UnprocessableEntityError" });
+ * ```
  */
 export class UnprocessableEntityError extends KitHttpError {
     /**
@@ -1056,6 +1202,11 @@ export class UnprocessableEntityError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 423, Locked.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new LockedError("Operation failed", { code: "LockedError" });
+ * ```
  */
 export class LockedError extends KitHttpError {
     /**
@@ -1082,6 +1233,11 @@ export class LockedError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 424, Failed Dependency.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new FailedDependencyError("Operation failed", { code: "FailedDependencyError" });
+ * ```
  */
 export class FailedDependencyError extends KitHttpError {
     /**
@@ -1108,6 +1264,11 @@ export class FailedDependencyError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 425, Too Early.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new TooEarlyError("Operation failed", { code: "TooEarlyError" });
+ * ```
  */
 export class TooEarlyError extends KitHttpError {
     /**
@@ -1134,6 +1295,11 @@ export class TooEarlyError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 426, Upgrade Required.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new UpgradeRequiredError("Operation failed", { code: "UpgradeRequiredError" });
+ * ```
  */
 export class UpgradeRequiredError extends KitHttpError {
     /**
@@ -1160,6 +1326,11 @@ export class UpgradeRequiredError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 428, Precondition Required.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new PreconditionRequiredError("Operation failed", { code: "PreconditionRequiredError" });
+ * ```
  */
 export class PreconditionRequiredError extends KitHttpError {
     /**
@@ -1186,6 +1357,11 @@ export class PreconditionRequiredError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 429, Too Many Requests.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new TooManyRequestsError("Operation failed", { code: "TooManyRequestsError" });
+ * ```
  */
 export class TooManyRequestsError extends KitHttpError {
     /**
@@ -1212,6 +1388,11 @@ export class TooManyRequestsError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 431, Request Header Fields Too Large.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new RequestHeaderFieldsTooLargeError("Operation failed", { code: "RequestHeaderFieldsTooLargeError" });
+ * ```
  */
 export class RequestHeaderFieldsTooLargeError extends KitHttpError {
     /**
@@ -1238,6 +1419,11 @@ export class RequestHeaderFieldsTooLargeError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 451, Unavailable For Legal Reasons.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new UnavailableForLegalReasonsError("Operation failed", { code: "UnavailableForLegalReasonsError" });
+ * ```
  */
 export class UnavailableForLegalReasonsError extends KitHttpError {
     /**
@@ -1264,6 +1450,11 @@ export class UnavailableForLegalReasonsError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 500, Internal Server Error.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new InternalServerError("Operation failed", { code: "InternalServerError" });
+ * ```
  */
 export class InternalServerError extends KitHttpError {
     /**
@@ -1290,6 +1481,11 @@ export class InternalServerError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 501, Not Implemented.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new NotImplementedError("Operation failed", { code: "NotImplementedError" });
+ * ```
  */
 export class NotImplementedError extends KitHttpError {
     /**
@@ -1316,6 +1512,11 @@ export class NotImplementedError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 502, Bad Gateway.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new BadGatewayError("Operation failed", { code: "BadGatewayError" });
+ * ```
  */
 export class BadGatewayError extends KitHttpError {
     /**
@@ -1342,6 +1543,11 @@ export class BadGatewayError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 503, Service Unavailable.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new ServiceUnavailableError("Operation failed", { code: "ServiceUnavailableError" });
+ * ```
  */
 export class ServiceUnavailableError extends KitHttpError {
     /**
@@ -1368,6 +1574,11 @@ export class ServiceUnavailableError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 504, Gateway Timeout.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new GatewayTimeoutError("Operation failed", { code: "GatewayTimeoutError" });
+ * ```
  */
 export class GatewayTimeoutError extends KitHttpError {
     /**
@@ -1394,6 +1605,11 @@ export class GatewayTimeoutError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 505, HTTP Version Not Supported.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new HttpVersionNotSupportedError("Operation failed", { code: "HttpVersionNotSupportedError" });
+ * ```
  */
 export class HttpVersionNotSupportedError extends KitHttpError {
     /**
@@ -1420,6 +1636,11 @@ export class HttpVersionNotSupportedError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 506, Variant Also Negotiates.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new VariantAlsoNegotiatesError("Operation failed", { code: "VariantAlsoNegotiatesError" });
+ * ```
  */
 export class VariantAlsoNegotiatesError extends KitHttpError {
     /**
@@ -1446,6 +1667,11 @@ export class VariantAlsoNegotiatesError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 507, Insufficient Storage.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new InsufficientStorageError("Operation failed", { code: "InsufficientStorageError" });
+ * ```
  */
 export class InsufficientStorageError extends KitHttpError {
     /**
@@ -1472,6 +1698,11 @@ export class InsufficientStorageError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 508, Loop Detected.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new LoopDetectedError("Operation failed", { code: "LoopDetectedError" });
+ * ```
  */
 export class LoopDetectedError extends KitHttpError {
     /**
@@ -1498,6 +1729,11 @@ export class LoopDetectedError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 510, Not Extended.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new NotExtendedError("Operation failed", { code: "NotExtendedError" });
+ * ```
  */
 export class NotExtendedError extends KitHttpError {
     /**
@@ -1524,6 +1760,11 @@ export class NotExtendedError extends KitHttpError {
 /**
  * Creates a new instance of the KitHttpError class with a status code of 511, Network Authentication Required.
  * @extends KitHttpError
+ *
+ * @example
+ * ```typescript
+ * throw new NetworkAuthenticationRequiredError("Operation failed", { code: "NetworkAuthenticationRequiredError" });
+ * ```
  */
 export class NetworkAuthenticationRequiredError extends KitHttpError {
     /**

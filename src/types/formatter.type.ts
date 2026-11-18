@@ -8,6 +8,14 @@
  * @param {unknown} details - Additional details about the error.
  * @param {...unknown} args - Additional arguments to be passed to the formatter.
  * @returns {unknown} The formatted output.
+ *
+ * @example
+ * ```typescript
+ * const customFormatter: IFormatter = (statusCode, message, details) => ({
+ *     success: false,
+ *     error: { code: statusCode, message, details }
+ * });
+ * ```
  */
 export type IFormatter = (
     /* eslint-disable-next-line no-unused-vars */
