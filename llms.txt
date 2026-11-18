@@ -1,0 +1,118 @@
+# http-error-kit
+
+> TypeScript-first HTTP error classes (NotFoundError, BadRequestError, etc.) with customizable formatters, RFC 7807 Problem Details, WHATWG Response conversion, and structured JSON responses for Express, Fastify, Hono, Next.js, and Node.js.
+
+## Overview
+`http-error-kit` provides 42 typed HTTP error classes mapped to standard HTTP status codes. Every error class extends `KitHttpError` (or `KitGeneralError`), captures HTTP status codes and custom detail payloads, supports RFC 7807 Problem Details formatting, and provides a native `.toResponse()` method for modern Web Standard environments (Next.js App Router, Hono, Cloudflare Workers).
+
+## Installation
+```bash
+npm install http-error-kit http-response-status-code
+```
+
+## Quick Start
+
+### Throwing Standard HTTP Errors
+```typescript
+import {
+  BadRequestError,
+  NotFoundError,
+  UnauthorizedError,
+  ForbiddenError,
+  InternalServerError,
+} from "http-error-kit";
+
+// Throw with message and optional details
+throw new NotFoundError("User not found", { userId: "usr_123" });
+throw new BadRequestError("Validation failed", { field: "email", reason: "Invalid format" });
+throw new UnauthorizedError("Authentication token expired");
+```
+
+### Express Integration
+```typescript
+import express from "express";
+import { NotFoundError, isKitError } from "http-error-kit";
+
+const app = express();
+
+app.get("/users/:id", (req, res) => {
+  throw new NotFoundError("User not found", { id: req.params.id });
+});
+
+// Centralized error handler
+app.use((err, req, res, next) => {
+  if (isKitError(err)) {
+    return res.status(err.statusCode || 500).json(err.toJSON());
+  }
+  res.status(500).json({ message: "Internal Server Error" });
+});
+```
+
+### Next.js App Router / Hono / Cloudflare Workers (`toResponse`)
+```typescript
+import { NotFoundError } from "http-error-kit";
+
+export async function GET() {
+  const user = await findUser();
+  if (!user) {
+    return new NotFoundError("User not found").toResponse();
+  }
+  return Response.json(user);
+}
+```
+
+### RFC 7807 / RFC 9457 Problem Details
+```typescript
+import { KitHttpErrorConfig, NotFoundError } from "http-error-kit";
+
+// Enable Problem Details globally across all errors
+KitHttpErrorConfig.useProblemDetails();
+
+const err = new NotFoundError("Item not found", "https://example.com/items/42");
+console.log(err.toJSON());
+// {
+//   type: "https://httpstatuses.com/404",
+//   title: "Not Found",
+//   status: 404,
+//   detail: "https://example.com/items/42"
+// }
+```
+
+### Response Headers
+```typescript
+import { UnauthorizedError, TooManyRequestsError } from "http-error-kit";
+
+throw new UnauthorizedError("Session expired")
+  .setHeader("WWW-Authenticate", 'Bearer error="token_expired"');
+
+throw new TooManyRequestsError("Rate limit exceeded")
+  .setHeaders({ "Retry-After": "60", "X-RateLimit-Limit": "100" });
+```
+
+## API Reference
+
+### Core Classes
+- `KitHttpError`: Base configurable HTTP error class with JSON serialization, header support, and `.toResponse()` conversion.
+- `KitGeneralError`: Base general error class for standard JSON error representation.
+- `KitHttpErrorConfig`: Static configuration manager:
+  - `KitHttpErrorConfig.configureFormatter(formatter)`: Sets global custom error formatter.
+  - `KitHttpErrorConfig.useProblemDetails()` / `useRfcProblemDetails()`: Activates RFC 7807 formatting.
+  - `KitHttpErrorConfig.shouldUseKitHttpErrors()`: Checks active formatting mode.
+  - `KitHttpErrorConfig.resetFormatter()`: Resets global formatting.
+
+### 42 Standard Error Classes
+- **Client Errors (4xx)**: `BadRequestError` (400), `UnauthorizedError` (401), `PaymentRequiredError` (402), `ForbiddenError` (403), `NotFoundError` (404), `MethodNotAllowedError` (405), `NotAcceptableError` (406), `ProxyAuthenticationRequiredError` (407), `RequestTimeoutError` (408), `ConflictError` (409), `GoneError` (410), `LengthRequiredError` (411), `PreconditionFailedError` (412), `RequestTooLongError` (413), `RequestUriTooLongError` (414), `UnsupportedMediaTypeError` (415), `RequestedRangeNotSatisfiableError` (416), `ExpectationFailedError` (417), `ImATeapotError` (418), `InsufficientSpaceOnResourceError` (419), `MethodFailureError` (420), `MisdirectedRequestError` (421), `UnprocessableEntityError` (422), `LockedError` (423), `FailedDependencyError` (424), `TooEarlyError` (425), `UpgradeRequiredError` (426), `PreconditionRequiredError` (428), `TooManyRequestsError` (429), `RequestHeaderFieldsTooLargeError` (431), `UnavailableForLegalReasonsError` (451)
+- **Server Errors (5xx)**: `InternalServerError` (500), `NotImplementedError` (501), `BadGatewayError` (502), `ServiceUnavailableError` (503), `GatewayTimeoutError` (504), `HttpVersionNotSupportedError` (505), `VariantAlsoNegotiatesError` (506), `InsufficientStorageError` (507), `LoopDetectedError` (508), `NotExtendedError` (510), `NetworkAuthenticationRequiredError` (511)
+
+### Type Guards
+- `isKitError(error: unknown): error is KitHttpError | KitGeneralError`
+- `isKitHttpError(error: unknown): error is KitHttpError`
+- `isKitGeneralError(error: unknown): error is KitGeneralError`
+
+## Guidelines for AI Coding Agents
+1. Throw specific error classes (e.g. `NotFoundError`, `BadRequestError`) instead of generic `new Error()`.
+2. Use `isKitError(err)` in global error handlers to safely extract `statusCode` and call `err.toJSON()`.
+3. For Web Standard environments (Next.js App Router, Hono, Cloudflare Workers), use `err.toResponse()`.
+4. Attach machine-readable metadata in the second constructor argument (`new BadRequestError("Validation failed", { field, reason })`).
+5. Set headers like `WWW-Authenticate` or `Retry-After` using `.setHeader(name, value)` or `.setHeaders(map)`.
+

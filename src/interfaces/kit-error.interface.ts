@@ -4,6 +4,18 @@ import { IFormatter } from "../types/formatter.type";
 /**
  * Common interface representing any Kit error instance (KitHttpError, KitGeneralError, or named error class).
  * @interface
+ *
+ * @example
+ * ```typescript
+ * import { IKitError, isKitError } from "http-error-kit";
+ *
+ * function handleError(err: unknown) {
+ *     if (isKitError(err)) {
+ *         const kitErr: IKitError = err;
+ *         console.log(kitErr.statusCode, kitErr.toJSON());
+ *     }
+ * }
+ * ```
  */
 export interface IKitError extends Error {
     /**

@@ -4,6 +4,16 @@
  * @interface IRfcProblemDetails
  * @see https://datatracker.ietf.org/doc/html/rfc7807
  * @see https://datatracker.ietf.org/doc/html/rfc9457
+ *
+ * @example
+ * ```typescript
+ * const problem: IRfcProblemDetails = {
+ *     type: "https://httpstatuses.com/404",
+ *     title: "Not Found",
+ *     status: 404,
+ *     detail: "User with ID 123 not found"
+ * };
+ * ```
  */
 export interface IRfcProblemDetails {
     /**

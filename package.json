@@ -1,6 +1,6 @@
 {
     "name": "http-error-kit",
-    "version": "1.4.0",
+    "version": "1.5.0",
     "description": "TypeScript-first HTTP error classes (NotFoundError, BadRequestError, etc.) with customizable formatters and structured JSON responses for Express, Fastify, Hono, and Next.js.",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -56,11 +56,20 @@
         "bad-request-error",
         "status-codes",
         "problem-details",
+        "rfc-7807",
+        "rfc-9457",
         "express-error-handler",
         "hono",
         "nextjs",
         "fastify",
         "typescript",
+        "ai-agent",
+        "agent-skill",
+        "antigravity",
+        "cursor",
+        "copilot",
+        "structured-errors",
+        "api-error-response",
         "skillnter"
     ],
     "author": "Himanshu Bansal <skillhimanshubansal@gmail.com>",
@@ -73,7 +82,7 @@
     },
     "homepage": "https://github.com/Skillnter/http-error-kit#readme",
     "dependencies": {
-        "http-response-status-code": "1.8.0"
+        "http-response-status-code": "1.9.0"
     },
     "devDependencies": {
         "@types/jest": "^29.5.14",
@@ -94,7 +103,8 @@
     "files": [
         "dist/**/*.js",
         "dist/**/*.d.ts",
-        "LICENSE"
+        "LICENSE",
+        "llms.txt"
     ],
     "funding": [
         {

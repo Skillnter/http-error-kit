@@ -13,7 +13,7 @@
 ![npms.io (final)](https://img.shields.io/npms-io/maintenance-score/http-error-kit?color=brightgreen)
 ![npm](https://img.shields.io/npm/dy/http-error-kit)
 ![NPM Type Definitions](https://img.shields.io/npm/types/http-error-kit)
-[![Socket Badge](https://socket.dev/api/badge/npm/package/http-error-kit/1.4.0)](https://socket.dev/npm/package/http-error-kit/overview/1.4.0)
+[![Socket Badge](https://socket.dev/api/badge/npm/package/http-error-kit/1.5.0)](https://socket.dev/npm/package/http-error-kit/overview/1.5.0)
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-121013?logo=github&logoColor=white)](https://skillnter.github.io/http-error-kit/)
 [![Github Sponsors](https://img.shields.io/badge/GitHub%20Sponsors-30363D?&logo=GitHub-Sponsors&logoColor=EA4AAA)](https://github.com/sponsors/Skillnter)
 [![Open Collective](https://img.shields.io/badge/Open%20Collective-3385FF?logo=open-collective&logoColor=white)](https://opencollective.com/http-error-kit)
@@ -34,6 +34,7 @@
 
 -   [Installation](#installation)
 -   [Framework Integration](#framework-integration)
+-   [AI Agent Integration](#ai-agent-integration)
 -   [Usage](#usage)
     -   [1. Dynamic Formatting ( Default )](#1-dynamic-formatting--default-)
     -   [2. Generic HTTP Errors](#2-generic-http-errors)
@@ -161,6 +162,19 @@ app.onError((err, c) => {
     }
     return c.json({ message: "Internal Server Error" }, 500);
 });
+```
+
+## AI Agent Integration
+
+When building with AI coding assistants (Claude Code, Cursor, GitHub Copilot, Antigravity, Devin), add this instruction to your project's `.cursorrules`, `.github/copilot-instructions.md`, or system prompt:
+
+```markdown
+### HTTP Error Handling Rule
+- Always throw semantic error classes from `http-error-kit` (e.g., `NotFoundError`, `BadRequestError`, `UnauthorizedError`) instead of generic `new Error()`.
+- Pass machine-readable metadata in the second argument: `new BadRequestError("Validation failed", { field, reason })`.
+- Use `isKitError(err)` in global error handlers to safely branch and extract `err.statusCode` and `err.toJSON()`.
+- For Fetch API, Next.js App Router, or Hono route handlers, convert directly to Web Standard responses with `err.toResponse()`.
+- Use `.setHeader(name, value)` or `.setHeaders(map)` to attach standard headers such as `WWW-Authenticate` or `Retry-After`.
 ```
 
 ## Usage

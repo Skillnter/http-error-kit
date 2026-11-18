@@ -1,6 +1,12 @@
 /**
  * Represents the raw input data for an HTTP error.
  * @interface
+ *
+ * @example
+ * ```typescript
+ * const inputs: IRawInput = err.getInputs();
+ * console.log(inputs.statusCode, inputs.message, inputs.details);
+ * ```
  */
 export interface IRawInput {
     /**
